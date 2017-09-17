@@ -17,3 +17,14 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
         'email' => $faker->email,
     ];
 });
+
+$factory->define(App\Customer::class, function (Faker\Generator $faker) {
+    return [
+        'name' => $faker->name,
+        'address' => $faker->streetAddress,
+        'city' => $faker->city,
+        'cep' => $faker->postcode,
+        'district' => $faker->state,
+        'phone' => $faker->phoneNumber
+    ];
+});

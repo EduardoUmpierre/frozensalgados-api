@@ -19,4 +19,8 @@ $router->group(['prefix' => 'api/v1'], function () use ($router) {
     $router->get('/customers', function () {
         return App\Customer::all();
     });
+
+    $router->get('/orders', function () {
+        return App\Order::all();
+    });
 });

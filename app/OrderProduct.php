@@ -33,6 +33,6 @@ class OrderProduct extends Model
      */
     public function product()
     {
-        return $this->hasMany('App\Product', 'id', 'order_id');
+        return $this->hasOne('App\Product', 'id', 'product_id');
     }
 }

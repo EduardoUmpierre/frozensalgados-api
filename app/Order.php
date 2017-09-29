@@ -12,7 +12,7 @@ class Order extends Model
      * @var array
      */
     protected $fillable = [
-        'total', 'status', 'customer_id'
+        'total', 'status'
     ];
 
     /**
@@ -21,7 +21,7 @@ class Order extends Model
      * @var array
      */
     protected $hidden = [
-        'updated_at'
+        'updated_at', 'customer_id'
     ];
 
     /**
@@ -31,6 +31,6 @@ class Order extends Model
      */
     public function customer()
     {
-        return $this->hasOne('App\Customer');
+        return $this->hasOne('App\Customer', 'id', 'customer_id');
     }
 }

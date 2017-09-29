@@ -21,6 +21,6 @@ $router->group(['prefix' => 'api/v1'], function () use ($router) {
     });
 
     $router->get('/orders', function () {
-        return \App\Order::with('customer')->get();
+        return \App\Order::with(['customer', 'orderProduct'])->get();
     });
 });

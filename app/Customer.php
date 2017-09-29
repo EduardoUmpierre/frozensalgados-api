@@ -22,4 +22,14 @@ class Customer extends Model
      */
     protected $hidden = [
     ];
+
+    /**
+     * Get the order list associated with the order.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function orders()
+    {
+        return $this->belongsToMany('App\Order', 'orders', 'customer_id', 'customer_id');
+    }
 }

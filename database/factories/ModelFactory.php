@@ -28,3 +28,12 @@ $factory->define(App\Customer::class, function (Faker\Generator $faker) {
         'phone' => $faker->phoneNumber
     ];
 });
+
+// @todo Fix order seed
+$factory->define(App\Order::class, function (Faker\Generator $faker) {
+    return [
+        'total' => $faker->numberBetween(1000, 10000),
+        'status' => 1,
+        'customer_id' => $faker->randomElement(App\Customer::pluck('id')->toArray())
+    ];
+});

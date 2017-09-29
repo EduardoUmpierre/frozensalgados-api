@@ -33,4 +33,14 @@ class Order extends Model
     {
         return $this->hasOne('App\Customer', 'id', 'customer_id');
     }
+
+    /**
+     * Get the order's product list associated with the order.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function orderProduct()
+    {
+        return $this->belongsToMany('App\Product', 'orders_products', 'order_id', 'product_id');
+    }
 }

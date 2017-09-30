@@ -23,4 +23,8 @@ $router->group(['prefix' => 'api/v1'], function () use ($router) {
     $router->get('/orders', function () {
         return \App\Order::with(['customer', 'orderProduct', 'orderProduct.product'])->get();
     });
+
+    $router->get('/products', function () {
+        return \App\Product::all();
+    });
 });

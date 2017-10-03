@@ -26,7 +26,8 @@ $router->group(['prefix' => 'api/v1', 'middleware' => []], function () use ($rou
         return \App\Order::with(['customer', 'orderProduct', 'orderProduct.product'])->get();
     });
 
-    $router->get('/products', function () {
-        return \App\Product::all();
+    $router->group(['prefix' => 'products'], function () use ($router) {
+        $router->get('/', ['uses' => 'ProductsController@getAll']);
+        $router->post('/', ['uses' => 'ProductsController@create']);
     });
 });

@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Product;
+use App\Customer;
 use Illuminate\Http\Request;
 
-class ProductsController extends Controller
+class CustomerController extends Controller
 {
     /**
      * @return \Illuminate\Database\Eloquent\Collection|static[]
      */
     public function getAll()
     {
-        return Product::all();
+        return Customer::all();
     }
 
     /**
@@ -22,10 +22,9 @@ class ProductsController extends Controller
     public function create(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required',
-            'price' => 'required|numeric'
+            'name' => 'required'
         ]);
 
-        return response()->json(Product::create($request->all()), 201);
+        return response()->json(Customer::create($request->all()), 201);
     }
 }

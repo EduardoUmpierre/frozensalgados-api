@@ -18,8 +18,9 @@ $router->get('/', function () use ($router) {
 });
 
 $router->group(['prefix' => 'api/v1', 'middleware' => []], function () use ($router) {
-    $router->get('/customers', function () {
-        return App\Customer::all();
+    $router->group(['prefix' => 'customers'], function () use ($router) {
+        $router->get('/', ['uses' => 'CustomerController@getAll']);
+        $router->post('/', ['uses' => 'CustomerController@create']);
     });
 
     $router->get('/orders', function () {
@@ -27,7 +28,7 @@ $router->group(['prefix' => 'api/v1', 'middleware' => []], function () use ($rou
     });
 
     $router->group(['prefix' => 'products'], function () use ($router) {
-        $router->get('/', ['uses' => 'ProductsController@getAll']);
-        $router->post('/', ['uses' => 'ProductsController@create']);
+        $router->get('/', ['uses' => 'ProductController@getAll']);
+        $router->post('/', ['uses' => 'ProductController@create']);
     });
 });

@@ -15,4 +15,4 @@ $ php -S localhost:8000 -t public
 ```
 
 
-[1]: https://github.com/EduardoUmpierre/frozensalgados-api
+[1]: https://github.com/EduardoUmpierre/frozensalgados

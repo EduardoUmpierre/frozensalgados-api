@@ -20,6 +20,6 @@ class OrderController
      */
     public function getOne($id)
     {
-        return Order::with(['customer', 'orderProduct', 'orderProduct.product'])->get()->where('id', '=', $id);
+        return Order::with(['customer', 'orderProduct', 'orderProduct.product'])->get()->where('id', '=', $id)->first();
     }
 }

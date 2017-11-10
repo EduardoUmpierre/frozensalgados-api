@@ -1,6 +1,6 @@
 # Frozen Salgados
 
-API RESTFull para a [aplicação desenvolvida em Ionic 3][1].
+API RESTful para a [aplicação desenvolvida em Ionic 3][1].
 
 ## Como rodar a aplicação
 

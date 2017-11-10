@@ -17,18 +17,31 @@ $router->get('/', function () use ($router) {
     return $router->app->version();
 });
 
+/**
+ * Api
+ */
 $router->group(['prefix' => 'api/v1', 'middleware' => []], function () use ($router) {
+    /**
+     * Customers
+     */
     $router->group(['prefix' => 'customers'], function () use ($router) {
-        $router->get('/', ['uses' => 'CustomerController@getAll']);
-        $router->post('/', ['uses' => 'CustomerController@create']);
+        $router->get('/', 'CustomerController@getAll');
+        $router->post('/', 'CustomerController@create');
     });
 
-    $router->get('/orders', function () {
-        return \App\Order::with(['customer', 'orderProduct', 'orderProduct.product'])->get();
+    /**
+     * Orders
+     */
+    $router->group(['prefix' => 'orders'], function () use ($router) {
+        $router->get('/', 'OrderController@getAll');
+        $router->get('/{id}', 'OrderController@getOne');
     });
 
+    /**
+     * Products
+     */
     $router->group(['prefix' => 'products'], function () use ($router) {
-        $router->get('/', ['uses' => 'ProductController@getAll']);
-        $router->post('/', ['uses' => 'ProductController@create']);
+        $router->get('/', 'ProductController@getAll');
+        $router->post('/', 'ProductController@create');
     });
 });

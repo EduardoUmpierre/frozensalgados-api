@@ -37,10 +37,10 @@ class Order extends Model
     /**
      * Get the order's product list associated with the order.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function orderProduct()
     {
-        return $this->belongsToMany('App\OrderProduct', 'products', 'id', 'id', 'order_id', 'order_id');
+        return $this->hasMany('App\OrderProduct', 'order_id');
     }
 }

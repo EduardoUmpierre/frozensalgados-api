@@ -24,9 +24,10 @@ $app = new Laravel\Lumen\Application(
 );
 
 $app->configure('cors');
+$app->configure('database');
+$app->configure('cache');
 
 $app->withFacades();
-
 $app->withEloquent();
 
 /*

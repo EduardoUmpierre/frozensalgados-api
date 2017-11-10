@@ -29,7 +29,7 @@ class OrderProduct extends Model
     /**
      * Get the product record associated with the order.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function product()
     {

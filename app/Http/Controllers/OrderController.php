@@ -16,10 +16,10 @@ class OrderController
 
     /**
      * @param $id
-     * @return static
+     * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model
      */
     public function getOne($id)
     {
-        return Order::with(['customer:id,name,phone,address', 'orderProduct', 'orderProduct.product'])->where('id', '=', $id)->first();
+        return Order::with(['customer:id,name,phone,address', 'orderProduct', 'orderProduct.product'])->findOrFail($id);
     }
 }

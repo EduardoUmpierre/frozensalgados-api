@@ -8,10 +8,17 @@ use Illuminate\Http\Request;
 class CustomerController extends Controller
 {
     /**
+     * @param Request $request
      * @return \Illuminate\Database\Eloquent\Collection|static[]
      */
-    public function getAll()
+    public function getAll(Request $request)
     {
+        $name = $request->input('name');
+
+        if ($name) {
+            return Customer::query()->select(['id', 'name'])->where('name', 'LIKE', "%$name%")->get();
+        }
+
         return Customer::all();
     }
 

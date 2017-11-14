@@ -35,6 +35,7 @@ $router->group(['prefix' => 'api/v1', 'middleware' => []], function () use ($rou
     $router->group(['prefix' => 'orders'], function () use ($router) {
         $router->get('/', 'OrderController@getAll');
         $router->get('/{id}', 'OrderController@getOne');
+        $router->post('/', 'OrderController@create');
     });
 
     /**

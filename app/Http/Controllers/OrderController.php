@@ -3,6 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Order;
+use App\Customer;
+use App\OrderProduct;
+use App\Product;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class OrderController
 {
@@ -21,5 +26,40 @@ class OrderController
     public function getOne($id)
     {
         return Order::with(['customer:id,name,phone,address', 'orderProduct', 'orderProduct.product'])->findOrFail($id);
+    }
+
+    public function create(Request $request)
+    {
+        $data = $request->all();
+
+        $customerId = $data['customer'];
+        $customer = Customer::query()->firstOrFail(['id']);
+
+        $products = $data['order'];
+
+        if ($customer) {
+            $orderTotal = 0;
+
+            foreach ($products as $key => $val) {
+                $price = Product::query()->findOrFail($val['id'], ['price'])->first()->price;
+
+                $products[$key]['price'] = $price;
+
+                $orderTotal += $price * $val['qnt'];
+            }
+
+            $order = Order::query()->create(['customer_id' => $customerId, 'total' => $orderTotal]);
+
+            foreach ($products as $key => $val) {
+                OrderProduct::query()->create([
+                    'order_id' => $order->id,
+                    'product_id' => $val['id'],
+                    'quantity' => $val['qnt'],
+                    'unit_price' => $val['price']
+                ]);
+            }
+
+            return response()->json(null, 201);
+        }
     }
 }

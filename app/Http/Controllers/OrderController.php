@@ -12,11 +12,14 @@ use Illuminate\Http\Response;
 class OrderController
 {
     /**
+     * @param Request $request
      * @return \Illuminate\Database\Eloquent\Collection|static[]
      */
-    public function getAll()
+    public function getAll(Request $request)
     {
-        return Order::with(['customer:id,name'])->get();
+        $order = $request->input('order');
+
+        return Order::with(['customer:id,name'])->orderBy('created_at', $order ? $order : 'ASC')->get();
     }
 
     /**

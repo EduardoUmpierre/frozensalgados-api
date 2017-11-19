@@ -13,10 +13,10 @@ class ProductController extends Controller
      */
     public function getAll(Request $request)
     {
-        $name = $request->input('name');
+        $id = $request->input('id');
 
-        if ($name) {
-            return Product::query()->select(['id', 'name', 'price'])->where('name', 'LIKE', "%$name%")->get();
+        if ($id) {
+            return Product::query()->select(['id', 'name', 'price'])->where('name', 'LIKE', "%$id%")->orWhere('id', '=', $id)->get();
         }
 
         return Product::all();

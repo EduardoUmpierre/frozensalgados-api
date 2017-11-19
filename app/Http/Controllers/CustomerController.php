@@ -13,10 +13,10 @@ class CustomerController extends Controller
      */
     public function getAll(Request $request)
     {
-        $name = $request->input('name');
+        $id = $request->input('id');
 
-        if ($name) {
-            return Customer::query()->select(['id', 'name'])->where('name', 'LIKE', "%$name%")->get();
+        if ($id) {
+            return Customer::query()->select(['id', 'name'])->where('name', 'LIKE', "%$id%")->orWhere('id', '=', $id)->get();
         }
 
         return Customer::all();

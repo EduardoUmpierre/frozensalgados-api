@@ -31,6 +31,10 @@ class OrderController
         return Order::with(['customer:id,name,phone,address', 'orderProduct', 'orderProduct.product'])->findOrFail($id);
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function create(Request $request)
     {
         $data = $request->all();

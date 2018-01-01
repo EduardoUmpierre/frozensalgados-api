@@ -45,4 +45,11 @@ $router->group(['prefix' => 'api/v1', 'middleware' => []], function () use ($rou
         $router->get('/', 'ProductController@getAll');
         $router->post('/', 'ProductController@create');
     });
+
+    /**
+     * Lists
+     */
+    $router->group(['prefix' => 'lists'], function () use ($router) {
+        $router->post('/', 'ListController@create');
+    });
 });

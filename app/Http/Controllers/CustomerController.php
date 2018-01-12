@@ -23,6 +23,20 @@ class CustomerController extends Controller
     }
 
     /**
+     * @param $id
+     * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model
+     *
+     * @todo Adicionar usuário logado na consulta
+     * @todo Remover listagem dos produtos
+     */
+    public function getOne($id)
+    {
+        return Customer::query()->with('lists')->whereHas('lists', function ($query) {
+            $query->where('user_id', '=', 1);
+        })->findOrFail($id);
+    }
+
+    /**
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */

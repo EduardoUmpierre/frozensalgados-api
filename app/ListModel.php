@@ -23,8 +23,15 @@ class ListModel extends Model
      * @var array
      */
     protected $hidden = [
-        'updated_at', 'customer_id'
+        'updated_at', 'customer_id', 'user_id', 'created_at'
     ];
+
+    protected $appends = ['product_count'];
+
+    public function getProductCountAttribute()
+    {
+        return $this->listProduct->count();
+    }
 
     /**
      * Get the customer record associated with the order.

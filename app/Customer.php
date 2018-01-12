@@ -21,6 +21,7 @@ class Customer extends Model
      * @var array
      */
     protected $hidden = [
+        'updated_at', 'created_at'
     ];
 
     /**
@@ -31,5 +32,15 @@ class Customer extends Model
     public function orders()
     {
         return $this->belongsToMany('App\Order', 'orders', 'customer_id', 'customer_id');
+    }
+
+    /**
+     * Get the order's product list associated with the order.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function lists()
+    {
+        return $this->hasMany('App\ListModel', 'customer_id');
     }
 }

@@ -26,6 +26,7 @@ $router->group(['prefix' => 'api/v1', 'middleware' => []], function () use ($rou
      */
     $router->group(['prefix' => 'customers'], function () use ($router) {
         $router->get('/', 'CustomerController@getAll');
+        $router->get('/{id}', 'CustomerController@getOne');
         $router->post('/', 'CustomerController@create');
     });
 

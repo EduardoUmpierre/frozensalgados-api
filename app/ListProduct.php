@@ -23,7 +23,7 @@ class ListProduct extends Model
      * @var array
      */
     protected $hidden = [
-        'updated_at'
+        'updated_at', 'created_at', 'list_id'
     ];
 
     /**

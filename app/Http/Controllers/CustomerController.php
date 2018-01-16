@@ -31,9 +31,9 @@ class CustomerController extends Controller
      */
     public function getOne($id)
     {
-        return Customer::query()->with('lists')->whereHas('lists', function ($query) {
+        return Customer::query()->with(['lists' => function ($query) {
             $query->where('user_id', '=', 1);
-        })->findOrFail($id);
+        }])->findOrFail($id);
     }
 
     /**

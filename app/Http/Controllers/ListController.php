@@ -53,7 +53,7 @@ class ListController extends Controller
                 ]);
             }
 
-            return response(null, 201);
+            return response()->json(null, 201);
         }
     }
 }

@@ -12,6 +12,22 @@ class ListController extends Controller
 {
     /**
      * @param Request $request
+     * @return \Illuminate\Database\Eloquent\Collection|static[]
+     *
+     * @todo Mudar user_id para o usuário lugado
+     */
+    public function getAll(Request $request)
+    {
+        $customer = $request->input('customer');
+
+        return ListModel::query()->select('title')->with(['listProduct'])->where([
+            'customer_id' => $customer,
+            'user_id' => 1
+        ])->orderBy('created_at')->get();
+    }
+
+    /**
+     * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function create(Request $request)

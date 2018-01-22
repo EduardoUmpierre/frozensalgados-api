@@ -67,9 +67,9 @@ $app->middleware([
     \Barryvdh\Cors\HandleCors::class,
 ]);
 
- $app->routeMiddleware([
-     'auth' => App\Http\Middleware\Authenticate::class,
- ]);
+$app->routeMiddleware([
+    'auth' => App\Http\Middleware\Authenticate::class,
+]);
 
 /*
 |--------------------------------------------------------------------------
@@ -100,10 +100,8 @@ $app->register(Dusterio\LumenPassport\PassportServiceProvider::class);
 |
 */
 
-$app->router->group([
-    'namespace' => 'App\Http\Controllers',
-], function ($router) {
-    require __DIR__ . '/../routes/web.php';
+$app->group(['namespace' => 'App\Http\Controllers'], function ($router) {
+    require __DIR__.'/../routes/web.php';
 });
 
 return $app;

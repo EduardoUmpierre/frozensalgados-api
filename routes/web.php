@@ -58,6 +58,6 @@ $router->group(['prefix' => 'api/v1', 'middleware' => ['auth']], function () use
      * Auth
      */
     $router->group(['prefix' => 'auth'], function () use ($router) {
-        $router->post('/me', 'AuthController@me');
+        $router->get('/me', 'AuthController@me');
     });
 });

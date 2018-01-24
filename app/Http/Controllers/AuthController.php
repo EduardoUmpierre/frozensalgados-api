@@ -13,7 +13,7 @@ class AuthController extends Controller
      */
     public function me(Request $request)
     {
-        $user = User::query()->where('id', $request->user()->id)->first();
+        $user = User::query()->select(['id', 'name', 'role', 'cpf'])->where('id', $request->user()->id)->first();
 
         return response()->json($user);
     }

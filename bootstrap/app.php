@@ -23,10 +23,6 @@ $app = new Laravel\Lumen\Application(
     realpath(__DIR__ . '/../')
 );
 
-$app->configure('cors');
-$app->configure('database');
-$app->configure('cache');
-
 $app->withFacades();
 $app->withEloquent();
 
@@ -99,6 +95,10 @@ $app->register(Dusterio\LumenPassport\PassportServiceProvider::class);
 | can respond to, as well as the controllers that may handle them.
 |
 */
+
+$app->configure('cors');
+$app->configure('database');
+$app->configure('cache');
 
 $app->group(['namespace' => 'App\Http\Controllers'], function ($router) {
     require __DIR__.'/../routes/web.php';

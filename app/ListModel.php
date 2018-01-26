@@ -50,6 +50,6 @@ class ListModel extends Model
      */
     public function listProduct()
     {
-        return $this->hasMany('App\listProduct', 'list_id');
+        return $this->hasMany('App\ListProduct', 'list_id');
     }
 }

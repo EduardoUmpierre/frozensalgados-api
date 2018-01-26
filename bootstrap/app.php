@@ -99,6 +99,7 @@ $app->register(Dusterio\LumenPassport\PassportServiceProvider::class);
 $app->configure('cors');
 $app->configure('database');
 $app->configure('cache');
+$app->configure('app');
 
 $app->group(['namespace' => 'App\Http\Controllers'], function ($router) {
     require __DIR__.'/../routes/web.php';

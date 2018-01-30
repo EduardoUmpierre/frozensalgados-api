@@ -13,17 +13,28 @@ class ListController extends Controller
     /**
      * @param Request $request
      * @return \Illuminate\Database\Eloquent\Collection|static[]
-     *
-     * @todo Mudar user_id para o usuário lugado
      */
     public function getAll(Request $request)
     {
         $customer = $request->input('customer');
 
-        return ListModel::query()->select('title')->with(['listProduct'])->where([
+        return ListModel::query()->select('id', 'title')->with(['listProduct'])->where([
             'customer_id' => $customer,
-            'user_id' => 1
+            'user_id' => $request->user()->id
         ])->orderBy('created_at')->get();
+    }
+
+    /**
+     * @param Request $request
+     * @param $id
+     * @return \Illuminate\Database\Eloquent\Model|static
+     */
+    public function getOne(Request $request, $id)
+    {
+        return ListModel::query()->select('id', 'title')->with(['listProduct', 'listProduct.product'])->where([
+            'id' => $id,
+            'user_id' => $request->user()->id
+        ])->firstOrFail();
     }
 
     /**
@@ -43,7 +54,7 @@ class ListController extends Controller
         $customerId = $data['customer'];
         $customer = Customer::query()->firstOrFail(['id']);
 
-        $userId = $data['user'];
+        $userId = $request->user()->id;
         $products = $data['order'];
         $title = $data['title'];
 

@@ -51,6 +51,8 @@ $router->group(['prefix' => 'api/v1', 'middleware' => ['auth']], function () use
      * Lists
      */
     $router->group(['prefix' => 'lists'], function () use ($router) {
+        $router->get('/', 'ListController@getAll');
+        $router->get('/{id}', 'ListController@getOne');
         $router->post('/', 'ListController@create');
     });
 

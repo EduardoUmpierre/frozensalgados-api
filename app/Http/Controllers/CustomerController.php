@@ -31,9 +31,17 @@ class CustomerController extends Controller
      */
     public function getOne(Request $request, $id)
     {
-        return Customer::query()->with(['lists' => function ($query) use ($request) {
-            $query->where('user_id', '=', $request->user()->id);
-        }])->findOrFail($id);
+        $lists = $request->input('lists');
+
+        if ($lists == '0') {
+            $query = Customer::query()->findOrFail($id);
+        } else {
+            $query = Customer::query()->with(['lists' => function ($query) use ($request) {
+                $query->where('user_id', '=', $request->user()->id);
+            }])->findOrFail($id);
+        }
+
+        return $query;
     }
 
     /**
@@ -47,5 +55,16 @@ class CustomerController extends Controller
         ]);
 
         return response()->json(Customer::create($request->all()), 201);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $this->validate($request, [
+            'name' => 'required'
+        ]);
+
+        $id = $request->get('id');
+
+        return response()->json(Customer::updateOrCreate(['id' => $id], $request->all()), 200);
     }
 }

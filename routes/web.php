@@ -28,6 +28,7 @@ $router->group(['prefix' => 'api/v1', 'middleware' => ['auth']], function () use
         $router->get('/', 'CustomerController@getAll');
         $router->get('/{id}', 'CustomerController@getOne');
         $router->post('/', 'CustomerController@create');
+        $router->put('/{id}', 'CustomerController@update');
     });
 
     /**

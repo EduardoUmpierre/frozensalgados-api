@@ -29,6 +29,7 @@ $router->group(['prefix' => 'api/v1', 'middleware' => ['auth']], function () use
         $router->get('/{id}', 'CustomerController@getOne');
         $router->post('/', 'CustomerController@create');
         $router->put('/{id}', 'CustomerController@update');
+        $router->delete('/{id}', 'CustomerController@delete');
     });
 
     /**

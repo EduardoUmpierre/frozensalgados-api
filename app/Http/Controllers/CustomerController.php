@@ -57,6 +57,11 @@ class CustomerController extends Controller
         return response()->json(Customer::create($request->all()), 201);
     }
 
+    /**
+     * @param Request $request
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function update(Request $request, $id)
     {
         $this->validate($request, [
@@ -66,5 +71,27 @@ class CustomerController extends Controller
         $id = $request->get('id');
 
         return response()->json(Customer::updateOrCreate(['id' => $id], $request->all()), 200);
+    }
+
+    /**
+     * @param Request $request
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function delete(Request $request, $id)
+    {
+        if (!$id) {
+            return response()->json(null, 405);
+        }
+
+        $customer = Customer::find($id);
+
+        if (!$customer) {
+            return response()->json(null, 404);
+        }
+
+        $customer->delete();
+
+        return response()->json(null, 200);
     }
 }

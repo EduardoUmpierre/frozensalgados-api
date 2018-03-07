@@ -24,6 +24,18 @@ class ProductController extends Controller
 
     /**
      * @param Request $request
+     * @param $id
+     * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model
+     */
+    public function getOne(Request $request, $id)
+    {
+        $query = Product::query()->findOrFail($id);
+
+        return $query;
+    }
+
+    /**
+     * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function create(Request $request)
@@ -34,5 +46,44 @@ class ProductController extends Controller
         ]);
 
         return response()->json(Product::create($request->all()), 201);
+    }
+
+    /**
+     * @param Request $request
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function update(Request $request, $id)
+    {
+        $this->validate($request, [
+            'name' => 'required'
+        ]);
+
+        $id = $request->get('id');
+
+        return response()->json(Product::updateOrCreate(['id' => $id], $request->all()), 200);
+    }
+
+    /**
+     * @param Request $request
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Exception
+     */
+    public function delete(Request $request, $id)
+    {
+        if (!$id) {
+            return response()->json(null, 405);
+        }
+
+        $product = Product::find($id);
+
+        if (!$product) {
+            return response()->json(null, 404);
+        }
+
+        $product->delete();
+
+        return response()->json(null, 200);
     }
 }

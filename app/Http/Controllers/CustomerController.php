@@ -77,6 +77,7 @@ class CustomerController extends Controller
      * @param Request $request
      * @param $id
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Exception
      */
     public function delete(Request $request, $id)
     {

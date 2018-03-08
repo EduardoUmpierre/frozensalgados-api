@@ -33,6 +33,13 @@ $router->group(['prefix' => 'api/v1', 'middleware' => ['auth']], function () use
     });
 
     /**
+     * Sellers
+     */
+    $router->group(['prefix' => 'sellers'], function () use ($router) {
+        $router->get('/', 'SellerController@getAll');
+    });
+
+    /**
      * Orders
      */
     $router->group(['prefix' => 'orders'], function () use ($router) {

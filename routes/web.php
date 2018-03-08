@@ -35,8 +35,12 @@ $router->group(['prefix' => 'api/v1', 'middleware' => ['auth']], function () use
     /**
      * Sellers
      */
-    $router->group(['prefix' => 'sellers'], function () use ($router) {
-        $router->get('/', 'SellerController@getAll');
+    $router->group(['prefix' => 'users'], function () use ($router) {
+        $router->get('/', 'UserController@getAll');
+        $router->get('/{id}', 'UserController@getOne');
+        $router->post('/', 'UserController@create');
+        $router->put('/{id}', 'UserController@update');
+        $router->delete('/{id}', 'UserController@delete');
     });
 
     /**

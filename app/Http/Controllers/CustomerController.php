@@ -16,10 +16,19 @@ class CustomerController extends Controller
         $id = $request->input('id');
 
         if ($id) {
-            return Customer::query()->select(['id', 'name'])->where('name', 'LIKE', "%$id%")->orWhere('id', '=', $id)->get();
+            return Customer::query()
+                ->select(['id', 'name'])
+                ->where('name', 'LIKE', "%$id%")
+                ->orWhere('id', '=', $id)
+                ->get();
         }
 
-        return Customer::all();
+        return Customer::query()
+            ->select('customers.*')
+            ->join('orders', 'orders.customer_id', '=', 'customers.id')
+            ->where('orders.user_id', '=', $request->user()->id)
+            ->groupBy('customers.id')
+            ->get();
     }
 
     /**

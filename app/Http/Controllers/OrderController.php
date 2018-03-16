@@ -19,7 +19,10 @@ class OrderController
     {
         $order = $request->input('order');
 
-        return Order::with(['customer:id,name'])->orderBy('created_at', $order ? $order : 'ASC')->get();
+        return Order::with(['customer:id,name'])
+            ->orderBy('created_at', $order ? $order : 'ASC')
+            ->where('orders.user_id', '=', $request->user()->id)
+            ->get();
     }
 
     /**
@@ -28,7 +31,8 @@ class OrderController
      */
     public function getOne($id)
     {
-        return Order::with(['customer:id,name,phone,address', 'orderProduct', 'orderProduct.product'])->findOrFail($id);
+        return Order::with(['customer:id,name,phone,address', 'orderProduct', 'orderProduct.product'])
+            ->findOrFail($id);
     }
 
     /**

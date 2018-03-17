@@ -59,7 +59,11 @@ class OrderController
                 $orderTotal += $price * $val['qnt'];
             }
 
-            $order = Order::query()->create(['customer_id' => $customerId, 'total' => $orderTotal]);
+            $order = Order::query()->create([
+                'customer_id' => $customerId,
+                'total' => $orderTotal,
+                'user_id' => $request->user()->id
+            ]);
 
             foreach ($products as $key => $val) {
                 OrderProduct::query()->create([

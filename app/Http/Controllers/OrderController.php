@@ -46,9 +46,8 @@ class OrderController
         $customerId = $data['customer'];
         $customer = Customer::query()->firstOrFail(['id']);
 
-        $products = $data['order'];
-
         if ($customer) {
+            $products = $data['order'];
             $orderTotal = 0;
 
             foreach ($products as $key => $val) {

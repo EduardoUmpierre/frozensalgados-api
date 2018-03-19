@@ -1,6 +1,6 @@
 {
-    "name": "laravel/lumen",
-    "description": "The Laravel Lumen Framework.",
+    "name": "Frozen Congelados API",
+    "description": "API RESTful construída em lumen",
     "keywords": [
         "framework",
         "laravel",

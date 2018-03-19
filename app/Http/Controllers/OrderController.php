@@ -46,9 +46,8 @@ class OrderController
         $customerId = $data['customer'];
         $customer = Customer::query()->firstOrFail(['id']);
 
-        $products = $data['order'];
-
         if ($customer) {
+            $products = $data['order'];
             $orderTotal = 0;
 
             foreach ($products as $key => $val) {
@@ -59,7 +58,11 @@ class OrderController
                 $orderTotal += $price * $val['qnt'];
             }
 
-            $order = Order::query()->create(['customer_id' => $customerId, 'total' => $orderTotal]);
+            $order = Order::query()->create([
+                'customer_id' => $customerId,
+                'total' => $orderTotal,
+                'user_id' => $request->user()->id
+            ]);
 
             foreach ($products as $key => $val) {
                 OrderProduct::query()->create([

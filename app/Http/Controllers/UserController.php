@@ -14,7 +14,7 @@ class UserController extends Controller
      */
     public function getAll(Request $request)
     {
-        return User::all();
+        return User::query()->select(['id', 'name', 'email', 'role'])->get();
     }
 
     /**
@@ -69,20 +69,25 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $user = User::query()->find($request->get('id'));
+        $this->validate($request, [
+            'name' => 'required',
+            'email' => 'required',
+            'cpf' => 'required',
+            'role' => 'required'
+        ]);
+
+        $user = User::query()->findOrFail($id);
         $user->name = $request->get('name');
         $user->email = $request->get('email');
         $user->cpf = $request->get('cpf');
         $user->role = $request->get('role');
 
-        if ($request->get('password') && $request->get('passwordRepeat')) {
+        if ($request->get('password') || $request->get('passwordRepeat')) {
             if ($request->get('password') === $request->get('passwordRepeat')) {
                 $user->password = app('hash')->make($request->get('password'));
             } else {
                 return response()->json(['error' => 'passwordNotEqual'], 405);
             }
-        } else {
-            return response()->json(['error' => 'passwordNotSent'], 405);
         }
 
         $user->save();
@@ -102,10 +107,9 @@ class UserController extends Controller
             return response()->json(null, 405);
         }
 
-        return response()->json(User::destroy($id));
-    }
+        $user = User::query()->findOrFail($id);
+        $user->delete();
 
-    private function updateUserData($user) {
-
+        return response()->json(null, 204);
     }
 }

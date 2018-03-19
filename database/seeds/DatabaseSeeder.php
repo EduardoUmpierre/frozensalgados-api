@@ -13,10 +13,6 @@ class DatabaseSeeder extends Seeder
     {
         $this->call('CustomersTableSeeder');
         $this->call('ProductsTableSeeder');
-
-        factory(\App\User::class)->create([
-            'email' => 'eduardoumpierre@hotmail.com',
-            'password' => app('hash')->make('123')
-        ]);
+        $this->call('UsersTableSeeder');
     }
 }

@@ -14,7 +14,10 @@
 $factory->define(App\User::class, function (Faker\Generator $faker) {
     return [
         'name' => $faker->name,
-        'email' => $faker->email,
+        'email' => $faker->numberBetween(1000, 10000),
+        'cpf' => $faker->numberBetween(10000000000, 90000000000),
+        'role' => $faker->numberBetween(1, 2),
+        'password' => app('hash')->make('123')
     ];
 });
 

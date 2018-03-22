@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/EduardoUmpierre/frozensalgados-api.svg?branch=master)](https://travis-ci.org/EduardoUmpierre/frozensalgados-api)
+
 # Frozen Salgados
 
 API RESTful para a [aplicação desenvolvida em Ionic 3][1].

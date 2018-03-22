@@ -6,6 +6,3 @@ php:
 
 before_script:
   - cp .env.travis .env
-
-script:
-  - vendor/bin/phpunit

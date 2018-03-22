@@ -25,8 +25,11 @@ class UsersTest extends \TestCase
     public function testGettingAllUsers()
     {
         // Request without authentication
-        $this->call('GET', UsersTest::URL);
+        $request = $this->call('GET', UsersTest::URL);
+        dd($request);
         $this->assertResponseStatus(401);
+
+
 
         // Authentication
         $user = factory(User::class)->create();

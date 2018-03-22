@@ -8,3 +8,8 @@ before_script:
   - cp .env.travis .env
 
 install: composer install
+
+script: "sbt clean coverage test"
+
+after_success:
+  - travis_retry php vendor/bin/php-coveralls

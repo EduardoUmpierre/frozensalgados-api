@@ -2,4 +2,9 @@ language: php
 php:
   - '7.1'
   - '7.2'
+before_script:
+  - cp .env.ci .env
+  - composer install --dev --prefer-source --no-interaction
+  - php artisan key:generate
+  - php artisan migrate --seed
 install: composer install

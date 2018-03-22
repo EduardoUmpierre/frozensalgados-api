@@ -20,7 +20,7 @@ class OrderController
         $order = $request->input('order');
 
         return Order::with(['customer:id,name'])
-            ->orderBy('created_at', $order ? $order : 'ASC')
+            ->orderBy('created_at', $order ? $order : 'DESC')
             ->where('orders.user_id', '=', $request->user()->id)
             ->get();
     }

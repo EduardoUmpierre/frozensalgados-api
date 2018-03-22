@@ -14,7 +14,7 @@ class AddCnpjToCustomers extends Migration
     public function up()
     {
         Schema::table('customers', function($table) {
-            $table->string('cnpj');
+            $table->string('cnpj')->nullable();
         });
     }
 

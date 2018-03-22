@@ -14,7 +14,7 @@ class AddTitleToLists extends Migration
     public function up()
     {
         Schema::table('lists', function($table) {
-            $table->string('title');
+            $table->string('title')->nullable();
         });
     }
 

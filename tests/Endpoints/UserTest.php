@@ -43,7 +43,7 @@ class UsersTest extends \TestCase
             'id' => $user->id,
             'name' => $user->name,
             'email' => (string)$user->email,
-            'role' => (int)$user->role
+            'role' => (string)$user->role
         ]);
     }
 
@@ -71,7 +71,7 @@ class UsersTest extends \TestCase
             'id' => $user->id,
             'name' => $user->name,
             'email' => (string)$user->email,
-            'role' => (int)$user->role
+            'role' => (string)$user->role
         ]);
 
         // Accessing invalid user should give 404

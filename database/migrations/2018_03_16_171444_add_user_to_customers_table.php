@@ -14,7 +14,7 @@ class AddUserToCustomersTable extends Migration
     public function up()
     {
         Schema::table('orders', function($table) {
-            $table->integer('user_id')->unsigned();
+            $table->integer('user_id')->unsigned()->nullable();
             $table->foreign('user_id')->references('id')->on('users');
         });
     }

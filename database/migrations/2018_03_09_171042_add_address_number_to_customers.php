@@ -14,7 +14,7 @@ class AddAddressNumberToCustomers extends Migration
     public function up()
     {
         Schema::table('customers', function($table) {
-            $table->string('address_number');
+            $table->string('address_number')->nullable();
         });
     }
 

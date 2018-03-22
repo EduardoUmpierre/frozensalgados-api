@@ -14,9 +14,9 @@ class AddUserLoginToUsers extends Migration
     public function up()
     {
         Schema::table('users', function($table) {
-            $table->string('email')->unique();
-            $table->string('password');
-            $table->string('api_token');
+            $table->string('email')->unique()->nullable();
+            $table->string('password')->nullable();
+            $table->string('api_token')->nullable();
 
         });
     }
@@ -29,9 +29,7 @@ class AddUserLoginToUsers extends Migration
     public function down()
     {
         Schema::table('users', function($table) {
-            $table->dropColumn('email');
-            $table->dropColumn('password');
-            $table->dropColumn('api_token');
+            $table->dropColumn(['email', 'password', 'api_token']);
         });
     }
 }

@@ -28,6 +28,16 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * @var array
      */
     protected $hidden = [
-        'password',
+        'password', 'updated_at', 'created_at'
     ];
+
+    /**
+     * Get the order list associated with the order.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function orders()
+    {
+        return $this->belongsToMany('App\Order', 'orders', 'user_id', 'user_id');
+    }
 }

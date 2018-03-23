@@ -35,6 +35,16 @@ class Order extends Model
     }
 
     /**
+     * Get the customer record associated with the order.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function user()
+    {
+        return $this->hasOne('App\User', 'id', 'user_id');
+    }
+
+    /**
      * Get the order's product list associated with the order.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

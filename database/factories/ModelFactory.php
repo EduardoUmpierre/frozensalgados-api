@@ -38,11 +38,11 @@ $factory->define(App\Product::class, function (Faker\Generator $faker) {
     ];
 });
 
-// @todo Fix order seed
 $factory->define(App\Order::class, function (Faker\Generator $faker) {
     return [
         'total' => $faker->numberBetween(1000, 10000),
         'status' => 1,
-        'customer_id' => $faker->factory(App\Customer::pluck('id')->toArray())
+        'customer_id' => DB::table('customers')->pluck('id')->random(),
+        'user_id' => DB::table('users')->pluck('id')->random(),
     ];
 });

@@ -7,13 +7,13 @@ use Laravel\Lumen\Testing\DatabaseMigrations;
 use Laravel\Passport\Token;
 
 /**
- * Class UsersTest
+ * Class UserTest
  *
  * Inspired in https://github.com/hasib32/rest-api-with-lumen/blob/master/tests/Endpoints/UsersTest.php
  *
  * @package Tests\Endpoints
  */
-class UsersTest extends \TestCase
+class UserTest extends \TestCase
 {
     use DatabaseMigrations;
 
@@ -25,17 +25,15 @@ class UsersTest extends \TestCase
     public function testGettingAllUsers()
     {
         // Request without authentication
-        $request = $this->call('GET', UsersTest::URL);
+        $this->get(UserTest::URL);
         $this->assertResponseStatus(401);
 
         // Authentication
         $user = factory(User::class)->create();
-        $user->withAccessToken(new Token(['scopes' => ['*']]));
-
         $this->actingAs($user);
 
         // Get all users
-        $this->call('GET', UsersTest::URL);
+        $this->get( UserTest::URL);
         $this->assertResponseOk();
 
         // Test json response
@@ -53,20 +51,18 @@ class UsersTest extends \TestCase
     public function testGettingSpecificUser()
     {
         // Request without authentication
-        $this->call('GET', UsersTest::URL . '1');
+        $this->get(UserTest::URL . '1');
         $this->assertResponseStatus(401);
 
         // Authentication
         $user = factory(User::class)->create();
-        $user->withAccessToken(new Token(['scopes' => ['*']]));
-
         $this->actingAs($user);
 
         // Get one user
-        $this->call('GET', UsersTest::URL . $user->id);
+        $this->get(UserTest::URL . $user->id);
         $this->assertResponseStatus(200);
 
-        // Teste json response
+        // Test json response
         $this->seeJson([
             'id' => $user->id,
             'name' => $user->name,
@@ -75,7 +71,7 @@ class UsersTest extends \TestCase
         ]);
 
         // Accessing invalid user should give 404
-        $this->call('GET', UsersTest::URL . '123456789');
+        $this->call('GET', UserTest::URL . '123456789');
         $this->assertResponseStatus(404);
     }
 
@@ -85,20 +81,19 @@ class UsersTest extends \TestCase
     public function testCreatingUser()
     {
         // Request without authentication
-        $this->call('POST', UsersTest::URL, []);
+        $this->post(UserTest::URL, []);
         $this->assertResponseStatus(401);
 
         // Authentication
         $user = factory(User::class)->make();
-        $user->withAccessToken(new Token(['scopes' => ['*']]));
         $this->actingAs($user);
 
         // Empty data
-        $this->call('POST', UsersTest::URL, []);
+        $this->post(UserTest::URL, []);
         $this->assertResponseStatus(422);
 
         // Valid request
-        $this->call('POST', UsersTest::URL, [
+        $this->post(UserTest::URL, [
             'name' => 'Test',
             'email' => 'test@test.com',
             'cpf' => '123456789',
@@ -109,7 +104,7 @@ class UsersTest extends \TestCase
         $this->assertResponseStatus(201);
 
         // Same e-mail as the last one
-        $this->call('POST', UsersTest::URL, [
+        $this->post(UserTest::URL, [
             'name' => 'Test',
             'email' => 'test@test.com',
             'cpf' => '11111',
@@ -119,7 +114,7 @@ class UsersTest extends \TestCase
         $this->assertResponseStatus(422);
 
         // Wrong password repeat
-        $this->call('POST', UsersTest::URL, [
+        $this->post(UserTest::URL, [
             'name' => 'Test',
             'email' => 'test1@test.com',
             'cpf' => '11112',
@@ -130,7 +125,7 @@ class UsersTest extends \TestCase
         $this->assertResponseStatus(405);
 
         // No password repeat sent
-        $this->call('POST', UsersTest::URL, [
+        $this->post(UserTest::URL, [
             'name' => 'Test',
             'email' => 'test2@test.com',
             'cpf' => '11113',
@@ -146,16 +141,15 @@ class UsersTest extends \TestCase
     public function testUpdatingUser()
     {
         // Request without authentication
-        $this->call('PUT', UsersTest::URL . '1', []);
+        $this->put(UserTest::URL . '1', []);
         $this->assertResponseStatus(401);
 
         // Authentication
         $user = factory(User::class)->create();
-        $user->withAccessToken(new Token(['scopes' => ['*']]));
         $this->actingAs($user);
 
         // Valid request
-        $this->call('PUT', UsersTest::URL . $user->id, [
+        $this->put(UserTest::URL . $user->id, [
             'name' => 'Eduardo',
             'email' => '12312312312',
             'cpf' => '12312312312',
@@ -164,7 +158,7 @@ class UsersTest extends \TestCase
         $this->assertResponseOk();
 
         // No password repeat
-        $this->call('PUT', UsersTest::URL . $user->id, [
+        $this->put(UserTest::URL . $user->id, [
             'name' => 'Eduardo',
             'email' => '12312312312',
             'cpf' => '12312312312',
@@ -174,7 +168,7 @@ class UsersTest extends \TestCase
         $this->assertResponseStatus(405);
 
         // Wrong password repeat
-        $this->call('PUT', UsersTest::URL . $user->id, [
+        $this->put(UserTest::URL . $user->id, [
             'name' => 'Eduardo',
             'email' => '12312312312',
             'cpf' => '12312312312',
@@ -185,13 +179,22 @@ class UsersTest extends \TestCase
         $this->assertResponseStatus(405);
 
         // Invalid id
-        $this->call('PUT', UsersTest::URL . '234324', [
+        $this->put(UserTest::URL . '234324', [
             'name' => 'Eduardo',
             'email' => '321312312312',
             'cpf' => '321312312312',
             'role' => '2'
         ]);
         $this->assertResponseStatus(404);
+
+        // Without id
+        $this->put(UserTest::URL, [
+            'name' => 'Eduardo',
+            'email' => '321312312312',
+            'cpf' => '321312312312',
+            'role' => '2'
+        ]);
+        $this->assertResponseStatus(405);
     }
 
     /**
@@ -200,24 +203,23 @@ class UsersTest extends \TestCase
     public function testDeletingUser()
     {
         // Request without authentication
-        $this->call('DELETE', UsersTest::URL . '12345');
+        $this->delete(UserTest::URL . '12345');
         $this->assertResponseStatus(401);
 
         // Authentication
         $user = factory(User::class)->create();
-        $user->withAccessToken(new Token(['scopes' => ['*']]));
         $this->actingAs($user);
 
         // Invalid call without id
-        $this->call('DELETE', UsersTest::URL);
+        $this->delete(UserTest::URL);
         $this->assertResponseStatus(405);
 
         // Valid request
-        $this->call('DELETE', UsersTest::URL . $user->id);
+        $this->delete(UserTest::URL . $user->id);
         $this->assertResponseStatus(204);
 
         // Invalid id
-        $this->call('DELETE', UsersTest::URL . '13232323');
+        $this->delete(UserTest::URL . '13232323');
         $this->assertResponseStatus(404);
     }
 }

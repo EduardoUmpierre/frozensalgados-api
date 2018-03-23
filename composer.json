@@ -16,14 +16,13 @@
         "dusterio/lumen-passport": "0.2.0",
         "guzzlehttp/guzzle": "^6.3",
         "doctrine/dbal": "^2.6",
-        "php-coveralls/php-coveralls": "^2.0"
+        "phpunit/phpunit": "6.5"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
-        "phpunit/phpunit": "~6.0",
         "mockery/mockery": "~0.9",
         "php-coveralls/php-coveralls": "^2.0",
-        "phpunit/phpcov": "^2.0"
+        "phpunit/phpcov": "^4.0.5"
     },
     "autoload": {
         "psr-4": {

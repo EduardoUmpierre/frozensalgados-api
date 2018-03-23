@@ -208,6 +208,10 @@ class UsersTest extends \TestCase
         $user->withAccessToken(new Token(['scopes' => ['*']]));
         $this->actingAs($user);
 
+        // Invalid call without id
+        $this->call('DELETE', UsersTest::URL);
+        $this->assertResponseStatus(405);
+
         // Valid request
         $this->call('DELETE', UsersTest::URL . $user->id);
         $this->assertResponseStatus(204);

@@ -46,3 +46,12 @@ $factory->define(App\Order::class, function (Faker\Generator $faker) {
         'user_id' => DB::table('users')->pluck('id')->random(),
     ];
 });
+
+$factory->define(App\ListModel::class, function (Faker\Generator $faker) {
+    return [
+        'total' => $faker->numberBetween(1000, 10000),
+        'title' => $faker->name,
+        'customer_id' => DB::table('customers')->pluck('id')->random(),
+        'user_id' => DB::table('users')->pluck('id')->random(),
+    ];
+});

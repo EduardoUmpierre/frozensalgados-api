@@ -22,7 +22,7 @@ class CustomerController extends Controller
         }
 
         return Customer::query()
-            ->select('customers.*')
+            ->select(['customers.id', 'customers.name', 'customers.address', 'customers.phone'])
             ->join('orders', 'orders.customer_id', '=', 'customers.id')
             ->where('orders.user_id', '=', $request->user()->id)
             ->groupBy('customers.id')
@@ -58,7 +58,13 @@ class CustomerController extends Controller
     public function create(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required'
+            'name' => 'required',
+            'cnpj' => 'required|unique:customers',
+            'cep' => 'required',
+            'address' => 'required',
+            'address_number' => 'required',
+            'city' => 'required',
+            'district' => 'required'
         ]);
 
         return response()->json(Customer::create($request->all()), 201);
@@ -71,13 +77,25 @@ class CustomerController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if (!$id) {
+            return response()->json(null, 405);
+        }
+
         $this->validate($request, [
-            'name' => 'required'
+            'name' => 'required',
+            'cnpj' => 'required|unique:customers',
+            'cep' => 'required',
+            'address' => 'required',
+            'address_number' => 'required',
+            'city' => 'required',
+            'district' => 'required'
         ]);
 
-        $id = $request->get('id');
+        $customer = Customer::query()->findOrFail($id);
+        $customer->update($request->all());
+        $customer->save();
 
-        return response()->json(Customer::updateOrCreate(['id' => $id], $request->all()), 200);
+        return response()->json(null, 200);
     }
 
     /**
@@ -92,14 +110,9 @@ class CustomerController extends Controller
             return response()->json(null, 405);
         }
 
-        $customer = Customer::find($id);
+        $user = Customer::query()->findOrFail($id);
+        $user->delete();
 
-        if (!$customer) {
-            return response()->json(null, 404);
-        }
-
-        $customer->delete();
-
-        return response()->json(null, 200);
+        return response()->json(null, 204);
     }
 }

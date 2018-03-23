@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/EduardoUmpierre/frozensalgados-api.svg?branch=master)](https://travis-ci.org/EduardoUmpierre/frozensalgados-api)
+[![Build Status](https://travis-ci.org/EduardoUmpierre/frozensalgados-api.svg?branch=master)](https://travis-ci.org/EduardoUmpierre/frozensalgados-api) [![Coverage Status](https://coveralls.io/repos/github/EduardoUmpierre/frozensalgados-api/badge.svg?branch=master)](https://coveralls.io/github/EduardoUmpierre/frozensalgados-api?branch=master)
 
 # Frozen Salgados
 

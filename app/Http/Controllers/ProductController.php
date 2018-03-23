@@ -16,7 +16,9 @@ class ProductController extends Controller
         $id = $request->input('id');
 
         if ($id) {
-            return Product::query()->select(['id', 'name', 'price'])->where('name', 'LIKE', "%$id%")->orWhere('id', '=', $id)->get();
+            return Product::query()->select(['id', 'name', 'price'])
+                ->where('name', 'LIKE', "%$id%")
+                ->orWhere('id', '=', $id)->get();
         }
 
         return Product::all();
@@ -29,9 +31,7 @@ class ProductController extends Controller
      */
     public function getOne(Request $request, $id)
     {
-        $query = Product::query()->findOrFail($id);
-
-        return $query;
+        return Product::query()->findOrFail($id);
     }
 
     /**
@@ -55,13 +55,20 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if (!$id) {
+            return response()->json(null, 405);
+        }
+
         $this->validate($request, [
-            'name' => 'required'
+            'name' => 'required',
+            'price' => 'required|numeric'
         ]);
 
-        $id = $request->get('id');
+        $customer = Product::query()->findOrFail($id);
+        $customer->update($request->all());
+        $customer->save();
 
-        return response()->json(Product::updateOrCreate(['id' => $id], $request->all()), 200);
+        return response()->json(null, 200);
     }
 
     /**
@@ -76,14 +83,9 @@ class ProductController extends Controller
             return response()->json(null, 405);
         }
 
-        $product = Product::find($id);
+        $user = Product::query()->findOrFail($id);
+        $user->delete();
 
-        if (!$product) {
-            return response()->json(null, 404);
-        }
-
-        $product->delete();
-
-        return response()->json(null, 200);
+        return response()->json(null, 204);
     }
 }

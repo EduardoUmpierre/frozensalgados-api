@@ -44,7 +44,7 @@ class CustomerController extends Controller
      */
     public function getOne(Request $request, $id): Model
     {
-        if ($request->input('lists')) {
+        if ($request->input('lists') != '') {
             return $this->customerRepository->findOneById($id);
         }
 

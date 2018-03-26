@@ -2,64 +2,59 @@
 
 namespace App\Http\Controllers;
 
-use App\Customer;
-use App\User;
+use App\Repositories\UserRepository;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class UserController extends Controller
 {
+    private $userRepository;
+
     /**
-     * @param Request $request
-     * @return \Illuminate\Database\Eloquent\Collection|static[]
+     * UserController constructor.
+     * @param UserRepository $ur
      */
-    public function getAll(Request $request)
+    public function __construct(UserRepository $ur)
     {
-        return User::query()->select(['id', 'name', 'email', 'role'])->get();
+        $this->userRepository = $ur;
     }
 
     /**
-     * @param Request $request
-     * @param $id
-     * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model
+     * @return Collection
      */
-    public function getOne(Request $request, $id)
+    public function getAll(): Collection
     {
-        return User::query()->findOrFail($id);
+        return $this->userRepository->findAll();
+    }
+
+    /**
+     * @param $id
+     * @return Model
+     */
+    public function getOne($id): Model
+    {
+        return $this->userRepository->findOneById($id);
     }
 
     /**
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function create(Request $request)
+    public function create(Request $request): JsonResponse
     {
         $this->validate($request, [
             'name' => 'required',
             'email' => 'required|unique:users',
             'cpf' => 'required|unique:users',
             'role' => 'required',
-            'password' => 'required'
+            'password' => 'required',
+            'passwordRepeat' => 'required'
         ]);
 
-        $user = new User();
-        $user->name = $request->get('name');
-        $user->email = $request->get('email');
-        $user->cpf = $request->get('cpf');
-        $user->role = $request->get('role');
-
-        if ($request->get('password') && $request->get('passwordRepeat')) {
-            if ($request->get('password') === $request->get('passwordRepeat')) {
-                $user->password = app('hash')->make($request->get('password'));
-            } else {
-                return response()->json(['error' => 'passwordNotEqual'], 405);
-            }
-        } else {
-            return response()->json(['error' => 'passwordNotSent'], 405);
-        }
-
-        $user->save();
-
-        return response()->json(null, 201);
+        return $this->userRepository->create($request->all());
     }
 
     /**
@@ -67,12 +62,8 @@ class UserController extends Controller
      * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id): JsonResponse
     {
-        if (!$id) {
-            return response()->json(null, 405);
-        }
-
         $this->validate($request, [
             'name' => 'required',
             'email' => 'required',
@@ -80,40 +71,15 @@ class UserController extends Controller
             'role' => 'required'
         ]);
 
-        $user = User::query()->findOrFail($id);
-        $user->name = $request->get('name');
-        $user->email = $request->get('email');
-        $user->cpf = $request->get('cpf');
-        $user->role = $request->get('role');
-
-        if ($request->get('password') || $request->get('passwordRepeat')) {
-            if ($request->get('password') === $request->get('passwordRepeat')) {
-                $user->password = app('hash')->make($request->get('password'));
-            } else {
-                return response()->json(['error' => 'passwordNotEqual'], 405);
-            }
-        }
-
-        $user->save();
-
-        return response()->json(null);
+        return $this->userRepository->update($request->all(), $id);
     }
 
     /**
-     * @param Request $request
-     * @param $id
-     * @return \Illuminate\Http\JsonResponse
-     * @throws \Exception
+     * @param int $id
+     * @return JsonResponse
      */
-    public function delete(Request $request, $id)
+    public function delete(int $id): JsonResponse
     {
-        if (!$id) {
-            return response()->json(null, 405);
-        }
-
-        $user = User::query()->findOrFail($id);
-        $user->delete();
-
-        return response()->json(null, 204);
+        return response()->json($this->userRepository->delete($id), Response::HTTP_NO_CONTENT);
     }
 }

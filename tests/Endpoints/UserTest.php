@@ -132,7 +132,7 @@ class UserTest extends \TestCase
             'role' => '1',
             'password' => '123'
         ]);
-        $this->assertResponseStatus(405);
+        $this->assertResponseStatus(422);
     }
 
     /**

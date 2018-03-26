@@ -6,33 +6,41 @@ use App\Order;
 use App\Customer;
 use App\OrderProduct;
 use App\Product;
+use App\Repositories\OrderRepository;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class OrderController
 {
-    /**
-     * @param Request $request
-     * @return \Illuminate\Database\Eloquent\Collection|static[]
-     */
-    public function getAll(Request $request)
-    {
-        $order = $request->input('order');
+    private $orderRepository;
 
-        return Order::with(['customer:id,name'])
-            ->orderBy('created_at', $order ? $order : 'DESC')
-            ->where('orders.user_id', '=', $request->user()->id)
-            ->get();
+    /**
+     * OrderController constructor.
+     * @param OrderRepository $or
+     */
+    public function __construct(OrderRepository $or)
+    {
+        $this->orderRepository = $or;
     }
 
     /**
-     * @param $id
-     * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model
+     * @param Request $request
+     * @return Collection
      */
-    public function getOne($id)
+    public function getAll(Request $request): Collection
     {
-        return Order::with(['customer:id,name,phone,address', 'orderProduct', 'orderProduct.product'])
-            ->findOrFail($id);
+        return $this->orderRepository->findAll($request->input('order'), $request->user()->id);
+    }
+
+    /**
+     * @param int $id
+     * @return Model
+     */
+    public function getOne(int $id): Model
+    {
+        return $this->orderRepository->findOneByid($id);
     }
 
     /**
@@ -41,39 +49,6 @@ class OrderController
      */
     public function create(Request $request)
     {
-        $data = $request->all();
-
-        $customerId = $data['customer'];
-        $customer = Customer::query()->firstOrFail(['id']);
-
-        if ($customer) {
-            $products = $data['order'];
-            $orderTotal = 0;
-
-            foreach ($products as $key => $val) {
-                $price = Product::query()->findOrFail($val['id'], ['price'])->first()->price;
-
-                $products[$key]['price'] = $price;
-
-                $orderTotal += $price * $val['qnt'];
-            }
-
-            $order = Order::query()->create([
-                'customer_id' => $customerId,
-                'total' => $orderTotal,
-                'user_id' => $request->user()->id
-            ]);
-
-            foreach ($products as $key => $val) {
-                OrderProduct::query()->create([
-                    'order_id' => $order->id,
-                    'product_id' => $val['id'],
-                    'quantity' => $val['qnt'],
-                    'unit_price' => $val['price']
-                ]);
-            }
-
-            return response()->json(null, 201);
-        }
+        return response()->json($this->orderRepository->create($request->all(), $request->user()->id), Response::HTTP_CREATED);
     }
 }

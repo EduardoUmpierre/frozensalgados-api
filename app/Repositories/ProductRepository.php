@@ -39,29 +39,31 @@ class ProductRepository
 
     /**
      * @param array $params
+     * @return null
      */
     public function create(array $params)
     {
         Product::query()->create($params);
 
-        return;
+        return null;
     }
 
     /**
      * @param array $params
      * @param int $id
+     * @return null
      */
     public function update(array $params, int $id)
     {
         Product::query()->findOrFail($id)->update($params);
 
-        return;
+        return null;
     }
 
     public function delete(int $id)
     {
         Product::query()->findOrFail($id)->delete();
 
-        return;
+        return null;
     }
 }

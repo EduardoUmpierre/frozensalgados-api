@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Product;
-use app\Services\ProductService;
+use App\Repositories\ProductRepository;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
@@ -11,24 +10,30 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    private $productService;
+    private $productRepository;
 
     /**
      * ProductController constructor.
-     * @param ProductService $ps
+     * @param ProductRepository $pr
      */
-    public function __construct(ProductService $ps)
+    public function __construct(ProductRepository $pr)
     {
-        $this->productService = $ps;
+        $this->productRepository = $pr;
     }
 
     /**
      * @param Request $request
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @return Collection
      */
     public function getAll(Request $request): Collection
     {
-        return $this->productService->getAll($request->input('id'));
+        $search = $request->input('id');
+
+        if ($search) {
+            return $this->productRepository->findAllBySearch($search);
+        }
+
+        return $this->productRepository->findAll();
     }
 
     /**
@@ -37,7 +42,7 @@ class ProductController extends Controller
      */
     public function getOne(int $id): Model
     {
-        return $this->productService->getOne($id);
+        return $this->productRepository->findOneById($id);
     }
 
     /**
@@ -51,7 +56,7 @@ class ProductController extends Controller
             'price' => 'required|numeric'
         ]);
 
-        return $this->productService->create($request->all());
+        return response()->json($this->productRepository->create($request->all()), 201);
     }
 
     /**
@@ -66,7 +71,7 @@ class ProductController extends Controller
             'price' => 'required|numeric'
         ]);
 
-        return $this->productService->update($request->all(), $id);
+        return response()->json($this->productRepository->update($request->all(), $id), 200);
     }
 
     /**
@@ -75,6 +80,6 @@ class ProductController extends Controller
      */
     public function delete(int $id): JsonResponse
     {
-        return $this->productService->delete($id);
+        return response()->json($this->productRepository->delete($id), 204);
     }
 }

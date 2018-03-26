@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class ProductController extends Controller
 {
@@ -56,7 +57,7 @@ class ProductController extends Controller
             'price' => 'required|numeric'
         ]);
 
-        return response()->json($this->productRepository->create($request->all()), 201);
+        return response()->json($this->productRepository->create($request->all()), Response::HTTP_CREATED);
     }
 
     /**
@@ -71,7 +72,7 @@ class ProductController extends Controller
             'price' => 'required|numeric'
         ]);
 
-        return response()->json($this->productRepository->update($request->all(), $id), 200);
+        return response()->json($this->productRepository->update($request->all(), $id));
     }
 
     /**
@@ -80,6 +81,6 @@ class ProductController extends Controller
      */
     public function delete(int $id): JsonResponse
     {
-        return response()->json($this->productRepository->delete($id), 204);
+        return response()->json($this->productRepository->delete($id), Response::HTTP_NO_CONTENT);
     }
 }

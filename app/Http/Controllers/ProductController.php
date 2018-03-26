@@ -3,89 +3,78 @@
 namespace App\Http\Controllers;
 
 use App\Product;
+use app\Services\ProductService;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
+    private $productService;
+
     /**
-     * @param Request $request
-     * @return \Illuminate\Database\Eloquent\Collection|static[]
+     * ProductController constructor.
+     * @param ProductService $ps
      */
-    public function getAll(Request $request)
+    public function __construct(ProductService $ps)
     {
-        $id = $request->input('id');
-
-        if ($id) {
-            return Product::query()->select(['id', 'name', 'price'])
-                ->where('name', 'LIKE', "%$id%")
-                ->orWhere('id', '=', $id)->get();
-        }
-
-        return Product::all();
+        $this->productService = $ps;
     }
 
     /**
      * @param Request $request
-     * @param $id
-     * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model
+     * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function getOne(Request $request, $id)
+    public function getAll(Request $request): Collection
     {
-        return Product::query()->findOrFail($id);
+        return $this->productService->getAll($request->input('id'));
+    }
+
+    /**
+     * @param int $id
+     * @return Model
+     */
+    public function getOne(int $id): Model
+    {
+        return $this->productService->getOne($id);
     }
 
     /**
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function create(Request $request)
+    public function create(Request $request): JsonResponse
     {
         $this->validate($request, [
             'name' => 'required',
             'price' => 'required|numeric'
         ]);
 
-        return response()->json(Product::create($request->all()), 201);
+        return $this->productService->create($request->all());
     }
 
     /**
      * @param Request $request
-     * @param $id
+     * @param int $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id): JsonResponse
     {
-        if (!$id) {
-            return response()->json(null, 405);
-        }
-
         $this->validate($request, [
             'name' => 'required',
             'price' => 'required|numeric'
         ]);
 
-        $customer = Product::query()->findOrFail($id);
-        $customer->update($request->all());
-        $customer->save();
-
-        return response()->json(null, 200);
+        return $this->productService->update($request->all(), $id);
     }
 
     /**
-     * @param Request $request
-     * @param $id
+     * @param int $id
      * @return \Illuminate\Http\JsonResponse
-     * @throws \Exception
      */
-    public function delete(Request $request, $id)
+    public function delete(int $id): JsonResponse
     {
-        if (!$id) {
-            return response()->json(null, 405);
-        }
-
-        $user = Product::query()->findOrFail($id);
-        $user->delete();
-
-        return response()->json(null, 204);
+        return $this->productService->delete($id);
     }
 }

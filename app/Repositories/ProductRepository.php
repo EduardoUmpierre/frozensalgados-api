@@ -60,6 +60,10 @@ class ProductRepository
         return null;
     }
 
+    /**
+     * @param int $id
+     * @return null
+     */
     public function delete(int $id)
     {
         Product::query()->findOrFail($id)->delete();

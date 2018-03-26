@@ -2,60 +2,60 @@
 
 namespace App\Http\Controllers;
 
-use App\Customer;
+use App\Repositories\CustomerRepository;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class CustomerController extends Controller
 {
+    private $customerRepository;
+
+    /**
+     * CustomerController constructor.
+     * @param $cr
+     */
+    public function __construct(CustomerRepository $cr)
+    {
+        $this->customerRepository = $cr;
+    }
+
     /**
      * @param Request $request
-     * @return \Illuminate\Database\Eloquent\Collection|static[]
+     * @return Collection
      */
-    public function getAll(Request $request)
+    public function getAll(Request $request): Collection
     {
-        $all = $request->input('all');
-
-        if ($all) {
-            return Customer::query()
-                ->select(['id', 'name'])
-                ->get();
+        if ($request->input('all')) {
+            return $this->customerRepository->findAll();
         }
 
-        return Customer::query()
-            ->select(['customers.id', 'customers.name', 'customers.address', 'customers.phone'])
-            ->join('orders', 'orders.customer_id', '=', 'customers.id')
-            ->where('orders.user_id', '=', $request->user()->id)
-            ->groupBy('customers.id')
-            ->get();
+        return $this->customerRepository->findAllWithOrderJoin($request->user()->id);
     }
 
     /**
      * @param Request $request
      * @param $id
-     * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model
+     * @return Model
      *
      * @todo Remover listagem dos produtos
      */
-    public function getOne(Request $request, $id)
+    public function getOne(Request $request, $id): Model
     {
-        $lists = $request->input('lists');
-
-        if ($lists == '0') {
-            $query = Customer::query()->findOrFail($id);
-        } else {
-            $query = Customer::query()->with(['lists' => function ($query) use ($request) {
-                $query->where('user_id', '=', $request->user()->id);
-            }])->findOrFail($id);
+        if ($request->input('lists')) {
+            return $this->customerRepository->findOneById($id);
         }
 
-        return $query;
+        return $this->customerRepository->findOneWithListsById($id, $request->user()->id);
     }
 
     /**
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function create(Request $request)
+    public function create(Request $request): JsonResponse
     {
         $this->validate($request, [
             'name' => 'required',
@@ -67,7 +67,7 @@ class CustomerController extends Controller
             'district' => 'required'
         ]);
 
-        return response()->json(Customer::create($request->all()), 201);
+        return response()->json($this->customerRepository->create($request->all()), Response::HTTP_CREATED);
     }
 
     /**
@@ -75,12 +75,8 @@ class CustomerController extends Controller
      * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id): JsonResponse
     {
-        if (!$id) {
-            return response()->json(null, 405);
-        }
-
         $this->validate($request, [
             'name' => 'required',
             'cnpj' => 'required|unique:customers',
@@ -91,28 +87,16 @@ class CustomerController extends Controller
             'district' => 'required'
         ]);
 
-        $customer = Customer::query()->findOrFail($id);
-        $customer->update($request->all());
-        $customer->save();
-
-        return response()->json(null, 200);
+        return response()->json($this->customerRepository->update($request->all(), $id));
     }
 
     /**
-     * @param Request $request
      * @param $id
      * @return \Illuminate\Http\JsonResponse
      * @throws \Exception
      */
-    public function delete(Request $request, $id)
+    public function delete($id): JsonResponse
     {
-        if (!$id) {
-            return response()->json(null, 405);
-        }
-
-        $user = Customer::query()->findOrFail($id);
-        $user->delete();
-
-        return response()->json(null, 204);
+        return response()->json($this->customerRepository->delete($id), Response::HTTP_NO_CONTENT);
     }
 }

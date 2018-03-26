@@ -2,19 +2,29 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
+use App\Repositories\UserRepository;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
+    private $userRepository;
+
+    /**
+     * AuthController constructor.
+     * @param UserRepository $ur
+     */
+    public function __construct(UserRepository $ur)
+    {
+        $this->userRepository = $ur;
+    }
+
     /**
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function me(Request $request)
+    public function me(Request $request): JsonResponse
     {
-        $user = User::query()->select(['id', 'name', 'role', 'cpf'])->where('id', $request->user()->id)->first();
-
-        return response()->json($user);
+        return response()->json($this->userRepository->findOneById($request->user()->id, ['id', 'name', 'role', 'cpf']));
     }
 }

@@ -30,11 +30,12 @@ class ProductRepository
 
     /**
      * @param int $id
+     * @param array $columns
      * @return Model
      */
-    public function findOneById(int $id): Model
+    public function findOneById(int $id, array $columns = ['*']): Model
     {
-        return Product::query()->findOrFail($id);
+        return Product::query()->findOrFail($id, $columns);
     }
 
     /**

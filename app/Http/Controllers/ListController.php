@@ -6,40 +6,51 @@ use App\Customer;
 use App\ListModel;
 use App\ListProduct;
 use App\Product;
+use App\Repositories\CustomerRepository;
+use App\Repositories\ListRepository;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Laravel\Passport\Passport;
 
 class ListController extends Controller
 {
+    private $listRepository;
+
+    /**
+     * ListController constructor.
+     * @param ListRepository $lr
+     */
+    public function __construct(ListRepository $lr)
+    {
+        $this->listRepository = $lr;
+    }
+
     /**
      * @param Request $request
-     * @return \Illuminate\Database\Eloquent\Collection|static[]
+     * @return Collection|\Illuminate\Http\JsonResponse
      */
-    public function getAll(Request $request)
+    public function getAll(Request $request): JsonResponse
     {
         $customer = $request->input('customer');
 
         if (!$customer) {
-            return response()->json(null, 405);
+            return response()->json(null, Response::HTTP_METHOD_NOT_ALLOWED);
         }
 
-        return ListModel::query()->select('id', 'title')->with(['listProduct'])->where([
-            'customer_id' => $customer,
-            'user_id' => $request->user()->id
-        ])->orderBy('created_at')->get();
+        return response()->json($this->listRepository->findAllByCustomerId($customer, $request->user()->id));
     }
 
     /**
      * @param Request $request
      * @param $id
-     * @return \Illuminate\Database\Eloquent\Model|static
+     * @return JsonResponse
      */
-    public function getOne(Request $request, $id)
+    public function getOne(Request $request, $id): JsonResponse
     {
-        return ListModel::query()->select('id', 'title')->with(['listProduct', 'listProduct.product'])->where([
-            'id' => $id,
-            'user_id' => $request->user()->id
-        ])->firstOrFail();
+        return response()->json($this->listRepository->findOneById($id, $request->user()->id));
     }
 
     /**
@@ -54,37 +65,6 @@ class ListController extends Controller
             'order' => 'required'
         ]);
 
-        $data = $request->all();
-
-        $customer = Customer::query()->findOrFail($data['customer'], ['id']);
-        $products = $data['order'];
-
-        $orderTotal = 0;
-
-        foreach ($products as $key => $val) {
-            $price = Product::query()->findOrFail($val['id'], ['price'])->first()->price;
-
-            $products[$key]['price'] = $price;
-
-            $orderTotal += $price * $val['qnt'];
-        }
-
-        $list = ListModel::query()->create([
-            'title' => $data['title'],
-            'total' => $orderTotal,
-            'user_id' => $request->user()->id,
-            'customer_id' => $customer->id
-        ]);
-
-        foreach ($products as $key => $val) {
-            ListProduct::query()->create([
-                'list_id' => $list->id,
-                'product_id' => $val['id'],
-                'quantity' => $val['qnt'],
-                'unit_price' => $val['price']
-            ]);
-        }
-
-        return response()->json(null, 201);
+        return response()->json($this->listRepository->create($request->all(), $request->user()->id), Response::HTTP_CREATED);
     }
 }

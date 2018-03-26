@@ -89,20 +89,19 @@ class ListTest extends \TestCase
         $this->assertResponseStatus(401);
 
         // Authentication
-        $user = factory(User::class)->make();
-        $this->actingAs($user);
+        $user = User::query()->findOrFail(1);
+        $this->be($user);
 
         // Valid request
-//        $this->post(ListTest::URL, [
-//            'title' => 'Teste',
-//            'customer' => '1',
-//            'user' => $user->id,
-//            'order' => [
-//                ['id' => 1, 'qnt' => 2],
-//                ['id' => 2, 'qnt' => 3]
-//            ]
-//        ]);
-//        $this->assertResponseStatus(201);
+        $this->post(ListTest::URL, [
+            'title' => 'Teste',
+            'customer' => '1',
+            'order' => [
+                ['id' => 1, 'qnt' => 2],
+                ['id' => 2, 'qnt' => 3]
+            ]
+        ]);
+        $this->assertResponseStatus(201);
 
         // Empty data
         $this->post(ListTest::URL, []);

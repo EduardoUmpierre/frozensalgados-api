@@ -157,6 +157,17 @@ class UserTest extends \TestCase
         ]);
         $this->assertResponseOk();
 
+        // Valid request
+        $this->put(UserTest::URL . $user->id, [
+            'name' => 'Eduardo',
+            'email' => '123123123123',
+            'cpf' => '123123123123',
+            'role' => '2',
+            'password' => '123',
+            'passwordRepeat' => '123',
+        ]);
+        $this->assertResponseOk();
+
         // No password repeat
         $this->put(UserTest::URL . $user->id, [
             'name' => 'Eduardo',

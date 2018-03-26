@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
-class OrderController
+class OrderController extends Controller
 {
     private $orderRepository;
 
@@ -49,6 +49,11 @@ class OrderController
      */
     public function create(Request $request)
     {
+        $this->validate($request, [
+            'customer' => 'required',
+            'order' => 'required'
+        ]);
+
         return response()->json($this->orderRepository->create($request->all(), $request->user()->id), Response::HTTP_CREATED);
     }
 }

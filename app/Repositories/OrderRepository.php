@@ -24,7 +24,7 @@ class OrderRepository
      * @param int $user
      * @return Collection
      */
-    public function findAll(string $order, int $user): Collection
+    public function findAll(string $order = null, int $user): Collection
     {
         return Order::with(['customer:id,name'])
             ->orderBy('created_at', $order ? $order : 'DESC')
@@ -61,7 +61,8 @@ class OrderRepository
         $order = Order::query()->create([
             'customer_id' => $customer->id,
             'total' => $orderTotal,
-            'user_id' => $user
+            'user_id' => $user,
+            'status' => 0
         ]);
 
         foreach ($products as $key => $val) {

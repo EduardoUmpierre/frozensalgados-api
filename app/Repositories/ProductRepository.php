@@ -44,6 +44,8 @@ class ProductRepository
      */
     public function create(array $params)
     {
+        $params['price'] = $this->fixCurrencyFormat($params['price']);
+
         Product::query()->create($params);
 
         return null;
@@ -56,6 +58,8 @@ class ProductRepository
      */
     public function update(array $params, int $id)
     {
+        $params['price'] = $this->fixCurrencyFormat($params['price']);
+
         Product::query()->findOrFail($id)->update($params);
 
         return null;
@@ -70,5 +74,17 @@ class ProductRepository
         Product::query()->findOrFail($id)->delete();
 
         return null;
+    }
+
+    /**
+     * @param float $value
+     * @return mixed
+     */
+    private function fixCurrencyFormat($value)
+    {
+        $source = array('.', ',');
+        $replace = array('', '.');
+
+        return str_replace($source, $replace, $value);
     }
 }

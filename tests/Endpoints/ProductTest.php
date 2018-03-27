@@ -102,6 +102,13 @@ class ProductTest extends \TestCase
         ]);
         $this->assertResponseStatus(422);
 
+        // Invalid request - wrong price regex
+        $this->post(ProductTest::URL, [
+            'name' => 'Teste',
+            'price' => '123'
+        ]);
+        $this->assertResponseStatus(422);
+
         // Invalid request - wrong field type
         $this->post(ProductTest::URL, [
             'name' => 'Teste',
@@ -112,7 +119,7 @@ class ProductTest extends \TestCase
         // Valid request
         $this->post(ProductTest::URL, [
             'name' => 'Teste',
-            'price' => '12'
+            'price' => '12,00'
         ]);
         $this->assertResponseStatus(201);
     }
@@ -133,7 +140,7 @@ class ProductTest extends \TestCase
         // Valid request
         $this->put(ProductTest::URL . '1', [
             'name' => 'Produto 1',
-            'price' => '123'
+            'price' => '123,00'
         ]);
         $this->assertResponseOk();
 
@@ -143,17 +150,24 @@ class ProductTest extends \TestCase
         ]);
         $this->assertResponseStatus(422);
 
+        // Invalid request - wrong price regex
+        $this->put(ProductTest::URL . '1', [
+            'name' => 'Produto 2',
+            'price' => '123'
+        ]);
+        $this->assertResponseStatus(422);
+
         // Invalid request - no product id
         $this->put(ProductTest::URL, [
             'name' => 'Produto 3',
-            'price' => '123'
+            'price' => '123,00'
         ]);
         $this->assertResponseStatus(405);
 
         // Invalid id
         $this->put(ProductTest::URL . '234324', [
             'name' => '123456',
-            'price' => '1234'
+            'price' => '1234,00'
         ]);
         $this->assertResponseStatus(404);
     }

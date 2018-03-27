@@ -54,7 +54,7 @@ class ProductController extends Controller
     {
         $this->validate($request, [
             'name' => 'required',
-            'price' => 'required|numeric'
+            'price' => 'required|regex:/^[0-9](\.?[0-9]+)*(\,[0-9]+)$/'
         ]);
 
         return response()->json($this->productRepository->create($request->all()), Response::HTTP_CREATED);
@@ -69,7 +69,7 @@ class ProductController extends Controller
     {
         $this->validate($request, [
             'name' => 'required',
-            'price' => 'required|numeric'
+            'price' => 'required|regex:/^[0-9](\.?[0-9]+)*(\,[0-9]+)$/'
         ]);
 
         return response()->json($this->productRepository->update($request->all(), $id));

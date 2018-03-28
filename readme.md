@@ -2,7 +2,11 @@
 
 # Frozen Salgados
 
-API RESTful para a [aplicação desenvolvida em Ionic 3][1].
+API RESTful desenvolvida com [Lumen 5.5][2] para [esse aplicativo][1].
+
+## Requisitos
+
+- PHP >= 7.0
 
 ## Como rodar a aplicação
 
@@ -16,5 +20,13 @@ $ php artisan db:seed
 $ php -S localhost:8000 -t public
 ```
 
+## Testes
+
+Para executar os testes, basta rodar o PHPUnit.
+
+```
+$ phpunit
+```  
 
 [1]: https://github.com/EduardoUmpierre/frozensalgados
+[2]: https://lumen.laravel.com/docs/5.5

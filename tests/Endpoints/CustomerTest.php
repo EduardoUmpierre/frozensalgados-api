@@ -70,7 +70,7 @@ class CustomerTest extends \TestCase
         $this->actingAs($user);
 
         // Get one customer without lists
-        $this->get(CustomerTest::URL . $user->id . '?lists=0');
+        $this->get(CustomerTest::URL . $user->id);
         $this->assertResponseStatus(200);
 
         $this->seeJsonStructure([
@@ -78,7 +78,7 @@ class CustomerTest extends \TestCase
         ]);
 
         // Get one customer with lists
-        $this->get(CustomerTest::URL . $user->id);
+        $this->get(CustomerTest::URL . $user->id . '?lists=true');
         $this->assertResponseStatus(200);
 
         // Test json response

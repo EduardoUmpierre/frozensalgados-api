@@ -37,18 +37,18 @@ class CustomerController extends Controller
 
     /**
      * @param Request $request
-     * @param $id
+     * @param int $id
      * @return Model
      *
      * @todo Remover listagem dos produtos
      */
-    public function getOne(Request $request, $id): Model
+    public function getOne(Request $request, int $id): Model
     {
-        if ($request->input('lists') != '') {
-            return $this->customerRepository->findOneById($id);
+        if ($request->input('lists')) {
+            return $this->customerRepository->findOneWithListsById($id, $request->user()->id);
         }
 
-        return $this->customerRepository->findOneWithListsById($id, $request->user()->id);
+        return $this->customerRepository->findOneById($id);
     }
 
     /**
@@ -72,10 +72,10 @@ class CustomerController extends Controller
 
     /**
      * @param Request $request
-     * @param $id
+     * @param int $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Request $request, $id): JsonResponse
+    public function update(Request $request, int $id): JsonResponse
     {
         $this->validate($request, [
             'name' => 'required',
@@ -91,11 +91,11 @@ class CustomerController extends Controller
     }
 
     /**
-     * @param $id
+     * @param int $id
      * @return \Illuminate\Http\JsonResponse
      * @throws \Exception
      */
-    public function delete($id): JsonResponse
+    public function delete(int $id): JsonResponse
     {
         return response()->json($this->customerRepository->delete($id), Response::HTTP_NO_CONTENT);
     }

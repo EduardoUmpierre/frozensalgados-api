@@ -13,10 +13,6 @@
 
 Dusterio\LumenPassport\LumenPassport::routes($router);
 
-$router->get('/', function () use ($router) {
-    return $router->app->version();
-});
-
 /**
  * Api
  */

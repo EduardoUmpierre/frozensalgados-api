@@ -33,12 +33,41 @@ class OrderRepository
     }
 
     /**
+     * @param int $customer
+     * @param int $user
+     * @return Collection
+     */
+    public function findAllByCustomerId(int $customer, int $user): Collection
+    {
+        return Order::query()
+            ->select('id', 'created_at')
+            ->where(['customer_id' => $customer, 'user_id' => $user])
+            ->orderBy('created_at')
+            ->get();
+    }
+
+    /**
      * @param int $id
      * @return Model
      */
     public function findOneById(int $id): Model
     {
         return Order::with(['customer:id,name,phone,address', 'orderProduct', 'orderProduct.product'])->findOrFail($id);
+    }
+
+    /**
+     * @param int $id
+     * @param int $user
+     * @return Model
+     */
+    public function findOneByCustomerId(int $id, int $user): Model
+    {
+        return Order::query()
+            ->select('id')
+//            ->join('orders_products', 'orders_products.order_id', '=', 'orders.id')
+            ->with(['orderProduct', 'orderProduct.product'])
+            ->where(['orders.id' => $id, 'user_id' => $user])
+            ->firstOrFail();
     }
 
     /**

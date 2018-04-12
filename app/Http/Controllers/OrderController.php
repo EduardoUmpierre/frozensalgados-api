@@ -2,10 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Order;
-use App\Customer;
-use App\OrderProduct;
-use App\Product;
 use App\Repositories\OrderRepository;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -35,12 +31,32 @@ class OrderController extends Controller
     }
 
     /**
+     * @param Request $request
+     * @param int $customer
+     * @return Collection
+     */
+    public function getAllByCustomer(Request $request, int $customer): Collection
+    {
+        return $this->orderRepository->findAllByCustomerId($customer, $request->user()->id);
+    }
+
+    /**
      * @param int $id
      * @return Model
      */
     public function getOne(int $id): Model
     {
         return $this->orderRepository->findOneByid($id);
+    }
+
+    /**
+     * @param Request $request
+     * @param int $customer
+     * @return Model
+     */
+    public function getOneByCustomer(Request $request, int $customer): Model
+    {
+        return $this->orderRepository->findOneByCustomerId($customer, $request->user()->id);
     }
 
     /**

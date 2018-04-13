@@ -52,7 +52,7 @@ class OrderRepository
      */
     public function findOneById(int $id): Model
     {
-        return Order::with(['customer:id,name,phone,address', 'orderProduct', 'orderProduct.product'])->findOrFail($id);
+        return Order::with(['customer:id,name,phone,address,cnpj', 'orderProduct', 'orderProduct.product'])->findOrFail($id);
     }
 
     /**
@@ -64,7 +64,6 @@ class OrderRepository
     {
         return Order::query()
             ->select('id')
-//            ->join('orders_products', 'orders_products.order_id', '=', 'orders.id')
             ->with(['orderProduct', 'orderProduct.product'])
             ->where(['orders.id' => $id, 'user_id' => $user])
             ->firstOrFail();
@@ -77,12 +76,13 @@ class OrderRepository
      */
     public function create(array $params, int $user)
     {
-        $customer = $this->customerRepository->findOneById($params['customer'], ['id']);
+        $customer = $this->customerRepository->findOneById($params['customer']['id'], ['id']);
         $products = $params['order'];
         $orderTotal = 0;
 
         foreach ($products as $key => $val) {
-            $price = $this->productRepository->findOneById($val['id'], ['price'])->first()->price;
+            $price = $this->productRepository->findOneById($val['id'], ['price'])->price;
+
             $products[$key]['price'] = $price;
             $orderTotal += $price * $val['qnt'];
         }
@@ -91,7 +91,11 @@ class OrderRepository
             'customer_id' => $customer->id,
             'total' => $orderTotal,
             'user_id' => $user,
-            'status' => 0
+            'status' => 0,
+            'payment_date' => $params['payment_date'],
+            'payment_method' => $params['payment_method'],
+            'delivery_date' => $params['delivery_date'],
+            'installments' => $params['installments']
         ]);
 
         foreach ($products as $key => $val) {

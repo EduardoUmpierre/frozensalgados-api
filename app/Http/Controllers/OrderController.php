@@ -46,7 +46,7 @@ class OrderController extends Controller
      */
     public function getOne(int $id): Model
     {
-        return $this->orderRepository->findOneByid($id);
+        return $this->orderRepository->findOneById($id);
     }
 
     /**
@@ -67,7 +67,11 @@ class OrderController extends Controller
     {
         $this->validate($request, [
             'customer' => 'required',
-            'order' => 'required'
+            'order' => 'required',
+            'payment_method' => 'required|numeric|min:1|max:4',
+            'payment_date' => 'required|date',
+            'delivery_date' => 'required|date',
+            'installments' => 'required|numeric|min:1|max:3'
         ]);
 
         return response()->json($this->orderRepository->create($request->all(), $request->user()->id), Response::HTTP_CREATED);

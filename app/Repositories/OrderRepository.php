@@ -42,7 +42,7 @@ class OrderRepository
         return Order::query()
             ->select('id', 'created_at')
             ->where(['customer_id' => $customer, 'user_id' => $user])
-            ->orderBy('created_at')
+            ->orderBy('created_at', 'DESC')
             ->get();
     }
 

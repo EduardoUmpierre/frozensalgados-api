@@ -13,7 +13,7 @@ class ProductRepository
      */
     public function findAll(): Collection
     {
-        return Product::all();
+        return Product::with(['category'])->get();
     }
 
     /**
@@ -23,6 +23,7 @@ class ProductRepository
     public function findAllBySearch(string $search): Collection
     {
         return Product::query()
+            ->with(['category'])
             ->select(['id', 'name', 'price'])
             ->where('name', 'LIKE', "%$search%")
             ->orWhere('id', '=', $search)->get();
@@ -33,9 +34,9 @@ class ProductRepository
      * @param array $columns
      * @return Model
      */
-    public function findOneById(int $id, array $columns = ['*']): Model
+    public function findOneById(int $id, array $columns = ['id', 'name', 'price']): Model
     {
-        return Product::query()->findOrFail($id, $columns);
+        return Product::query()->with('category')->findOrFail($id, $columns);
     }
 
     /**
@@ -68,6 +69,7 @@ class ProductRepository
     /**
      * @param int $id
      * @return null
+     * @throws \Exception
      */
     public function delete(int $id)
     {

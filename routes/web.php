@@ -71,6 +71,17 @@ $router->group(['prefix' => 'api/v1', 'middleware' => ['auth']], function () use
     });
 
     /**
+     * Categories
+     */
+    $router->group(['prefix' => 'categories'], function () use ($router) {
+        $router->get('/', 'CategoryController@getAll');
+        $router->get('/{id}', 'CategoryController@getOne');
+        $router->post('/', 'CategoryController@create');
+        $router->put('/{id}', 'CategoryController@update');
+        $router->delete('/{id}', 'CategoryController@delete');
+    });
+
+    /**
      * Auth
      */
     $router->group(['prefix' => 'auth'], function () use ($router) {

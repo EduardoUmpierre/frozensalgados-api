@@ -79,7 +79,7 @@ class CustomerController extends Controller
     {
         $this->validate($request, [
             'name' => 'required',
-            'cnpj' => 'required|unique:customers',
+            'cnpj' => 'required|unique:customers,cnpj,' . $id,
             'cep' => 'required',
             'address' => 'required',
             'address_number' => 'required',

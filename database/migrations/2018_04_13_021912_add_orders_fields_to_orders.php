@@ -29,10 +29,7 @@ class AddOrdersFieldsToOrders extends Migration
     public function down()
     {
         Schema::table('orders', function($table) {
-            $table->dropColumn('payment_date');
-            $table->dropColumn('delivery_date');
-            $table->dropColumn('installments');
-            $table->dropColumn('payment_method');
+            $table->dropColumn(['payment_date', 'delivery_date', 'installments', 'payment_method']);
         });
     }
 }

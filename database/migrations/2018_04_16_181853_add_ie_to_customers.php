@@ -27,8 +27,7 @@ class AddIeToCustomers extends Migration
     public function down()
     {
         Schema::table('customers', function ($table) {
-            $table->dropColumn('ie');
-            $table->dropColumn('ie_exempt');
+            $table->dropColumn(['ie', 'ie_exempt']);
         });
     }
 }

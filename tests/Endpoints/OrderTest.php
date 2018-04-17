@@ -90,11 +90,17 @@ class OrderTest extends \TestCase
 
         // Valid request
         $this->post(OrderTest::URL, [
-            'customer' => '1',
+            'customer' => [
+                'id' => '1'
+            ],
             'order' => [
                 ['id' => 1, 'qnt' => 2],
                 ['id' => 2, 'qnt' => 3]
-            ]
+            ],
+            'payment_method' => '1',
+            'payment_date' => '2018-04-16T19:53:44-03:00',
+            'delivery_date' => '2018-04-16T19:53:44-03:00',
+            'installments' => '2'
         ]);
         $this->assertResponseStatus(201);
 
@@ -110,10 +116,17 @@ class OrderTest extends \TestCase
 
         // Invalid request - invalid customer id
         $this->post(OrderTest::URL, [
-            'customer' => '12345',
+            'customer' => [
+                'id' => '1000'
+            ],
             'order' => [
+                ['id' => 1, 'qnt' => 2],
                 ['id' => 2, 'qnt' => 3]
-            ]
+            ],
+            'payment_method' => '1',
+            'payment_date' => '2018-04-16T19:53:44-03:00',
+            'delivery_date' => '2018-04-16T19:53:44-03:00',
+            'installments' => '2'
         ]);
         $this->assertResponseStatus(404);
     }

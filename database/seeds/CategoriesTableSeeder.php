@@ -11,10 +11,10 @@ class CategoriesTableSeeder extends Seeder
      */
     public function run()
     {
-        App\Category::query()->create(['name' => 'Lanche']);
-        App\Category::query()->create(['name' => 'Festa']);
-        App\Category::query()->create(['name' => 'Especiais']);
-        App\Category::query()->create(['name' => 'Gecepel']);
-        App\Category::query()->create(['name' => 'Miniaturas']);
+        factory(App\Category::class)->create(['name' => 'Lanche']);
+        factory(App\Category::class)->create(['name' => 'Festa']);
+        factory(App\Category::class)->create(['name' => 'Especiais']);
+        factory(App\Category::class)->create(['name' => 'Gecepel']);
+        factory(App\Category::class)->create(['name' => 'Miniaturas']);
     }
 }

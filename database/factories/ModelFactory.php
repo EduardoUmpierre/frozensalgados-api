@@ -39,6 +39,12 @@ $factory->define(App\Product::class, function (Faker\Generator $faker) {
     ];
 });
 
+$factory->define(App\Category::class, function (Faker\Generator $faker) {
+    return [
+        'name' => $faker->word
+    ];
+});
+
 $factory->define(App\Order::class, function (Faker\Generator $faker) {
     return [
         'total' => $faker->numberBetween(1000, 10000),

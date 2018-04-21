@@ -49,6 +49,30 @@ class OrderTest extends \TestCase
     /**
      *
      */
+    public function testGettingAllCustomerOrders()
+    {
+        // Request without authentication
+        $this->get(OrderTest::URL . 'customer/1');
+        $this->assertResponseStatus(401);
+
+        // Authentication
+        $user = factory(User::class)->create();
+        $this->actingAs($user);
+
+        // Get all orders with the authenticated user
+        $this->get(OrderTest::URL  . 'customer/1');
+        $this->assertResponseOk();
+
+        $this->seeJsonStructure([
+            '*' => [
+                'id', 'created_at'
+            ]
+        ]);
+    }
+
+    /**
+     *
+     */
     public function testGettingSpecificOrder()
     {
         // Request without authentication
@@ -62,12 +86,40 @@ class OrderTest extends \TestCase
         factory(Order::class, 3)->create(['user_id' => $user->id, 'customer_id' => 1]);
 
         // Get one order
-        $this->get(OrderTest::URL . '1')->response->getContent();
+        $this->get(OrderTest::URL . '1');
         $this->assertResponseStatus(200);
 
         $this->seeJsonStructure([
             'id', 'total', 'status', 'created_at', 'user_id', 'customer' => ['id', 'name', 'phone', 'address'],
             'order_product'
+        ]);
+
+        // Accessing invalid order should give 404
+        $this->get(OrderTest::URL . '123456789');
+        $this->assertResponseStatus(404);
+    }
+
+    /**
+     *
+     */
+    public function testGettingSpecificCustomerOrder()
+    {
+        // Request without authentication
+        $this->get(OrderTest::URL . '1/products');
+        $this->assertResponseStatus(401);
+
+        // Authentication
+        $user = factory(User::class)->create();
+        $this->actingAs($user);
+
+        factory(Order::class, 3)->create(['user_id' => $user->id, 'customer_id' => 1]);
+
+        // Get one order
+        $this->get(OrderTest::URL . '1/products')->response->getContent();
+        $this->assertResponseStatus(200);
+
+        $this->seeJsonStructure([
+            'id', 'order_product'
         ]);
 
         // Accessing invalid order should give 404

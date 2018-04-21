@@ -25,7 +25,7 @@ $ php -S localhost:8000 -t public
 Para executar os testes, basta rodar o PHPUnit.
 
 ```
-$ phpunit
+$ vendor\bin\phpunit.bat
 ```  
 
 [1]: https://github.com/EduardoUmpierre/frozensalgados

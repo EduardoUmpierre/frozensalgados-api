@@ -9,25 +9,19 @@ use Illuminate\Database\Eloquent\Model;
 class CustomerRepository
 {
     /**
+     * @param int $id
+     * @param int $role
      * @return Collection
      */
-    public function findAll(): Collection
+    public function findAll(int $id, int $role): Collection
     {
-        return Customer::query()->select(['id', 'name'])->get();
-    }
+        $query = Customer::query()->select(['id', 'name', 'address', 'phone']);
 
-    /**
-     * @param int $user
-     * @return Collection
-     */
-    public function findAllWithOrderJoin(int $user): Collection
-    {
-        return Customer::query()
-            ->select(['customers.id', 'customers.name', 'customers.address', 'customers.phone'])
-            ->join('orders', 'orders.customer_id', '=', 'customers.id')
-            ->where('orders.user_id', '=', $user)
-            ->groupBy('customers.id')
-            ->get();
+        if ($role !== 1) {
+            $query->where('user_id', '=', $id);
+        }
+
+        return $query->orderBy('id', 'DESC')->get();
     }
 
     /**

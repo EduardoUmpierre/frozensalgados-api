@@ -83,7 +83,7 @@ class CustomerTest extends \TestCase
 
         // Test json response
         $this->seeJsonStructure([
-            'id', 'name', 'phone', 'address', 'city', 'cep', 'district', 'cnpj', 'address_number', 'lists'
+            'id', 'name', 'phone', 'address', 'city', 'cep', 'district', 'cnpj', 'address_number'
         ]);
 
         // Accessing invalid user should give 404
@@ -116,6 +116,7 @@ class CustomerTest extends \TestCase
 
         // Valid request
         $this->post(CustomerTest::URL, [
+            'user_id' => '1',
             'name' => 'Teste',
             'cnpj' => '12345',
             'cep' => '12345',
@@ -154,8 +155,9 @@ class CustomerTest extends \TestCase
 
         // Valid request
         $this->put(CustomerTest::URL . $user->id, [
+            'user_id' => '1',
             'name' => '123456',
-            'cnpj' => '123',
+            'cnpj' => '123412412412412',
             'cep' => '123',
             'address' => '123',
             'address_number' => '123',
@@ -186,6 +188,7 @@ class CustomerTest extends \TestCase
 
         // Invalid id
         $this->put(CustomerTest::URL . '234324', [
+            'user_id' => '1',
             'name' => '123456',
             'cnpj' => '1234',
             'cep' => '123',

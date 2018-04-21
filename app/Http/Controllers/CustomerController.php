@@ -28,26 +28,15 @@ class CustomerController extends Controller
      */
     public function getAll(Request $request): Collection
     {
-        if ($request->input('all')) {
-            return $this->customerRepository->findAll();
-        }
-
-        return $this->customerRepository->findAllWithOrderJoin($request->user()->id);
+        return $this->customerRepository->findAll($request->user()->id, $request->user()->role);
     }
 
     /**
-     * @param Request $request
      * @param int $id
      * @return Model
-     *
-     * @todo Remover listagem dos produtos
      */
-    public function getOne(Request $request, int $id): Model
+    public function getOne(int $id): Model
     {
-        if ($request->input('lists')) {
-            return $this->customerRepository->findOneWithListsById($id, $request->user()->id);
-        }
-
         return $this->customerRepository->findOneById($id);
     }
 
@@ -58,6 +47,7 @@ class CustomerController extends Controller
     public function create(Request $request): JsonResponse
     {
         $this->validate($request, [
+            'user_id' => 'required',
             'name' => 'required',
             'cnpj' => 'required|unique:customers',
             'cep' => 'required',
@@ -78,6 +68,7 @@ class CustomerController extends Controller
     public function update(Request $request, int $id): JsonResponse
     {
         $this->validate($request, [
+            'user_id' => 'required',
             'name' => 'required',
             'cnpj' => 'required|unique:customers,cnpj,' . $id,
             'cep' => 'required',

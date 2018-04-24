@@ -87,4 +87,24 @@ $router->group(['prefix' => 'api/v1', 'middleware' => ['auth']], function () use
     $router->group(['prefix' => 'auth'], function () use ($router) {
         $router->get('/me', 'AuthController@me');
     });
+
+    /**
+     * Reports
+     */
+    $router->group(['prefix' => 'reports'], function () use ($router) {
+        $router->get('/products', 'ReportController@getProductReport');
+        $router->get('/products/{from}/{to}', 'ReportController@getProductReportBetweenDates');
+        $router->get('/products/{id}', 'ReportController@getProductReportById');
+        $router->get('/products/{id}/{from}/{to}', 'ReportController@getProductReportBetweenDatesById');
+
+        $router->get('/categories', 'ReportController@getCategoryReport');
+        $router->get('/categories/{from}/{to}', 'ReportController@getCategoryReportBetweenDates');
+        $router->get('/categories/{id}', 'ReportController@getCategoryReportById');
+        $router->get('/categories/{id}/{from}/{to}', 'ReportController@getCategoryReportBetweenDatesById');
+
+        $router->get('/sellers', 'ReportController@getSellerReport');
+        $router->get('/sellers/{from}/{to}', 'ReportController@getSellerReportBetweenDates');
+        $router->get('/sellers/{id}', 'ReportController@getSellerReportById');
+        $router->get('/sellers/{id}/{from}/{to}', 'ReportController@getSellerReportBetweenDatesById');
+    });
 });

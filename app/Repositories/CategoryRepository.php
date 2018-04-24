@@ -8,6 +8,20 @@ use Illuminate\Database\Eloquent\Model;
 
 class CategoryRepository
 {
+    private $productRepository;
+    private $orderProductRepository;
+
+    /**
+     * CategoryRepository constructor.
+     * @param ProductRepository $pr
+     * @param OrderProductRepository $opr
+     */
+    public function __construct(ProductRepository $pr, OrderProductRepository $opr)
+    {
+        $this->productRepository = $pr;
+        $this->orderProductRepository = $opr;
+    }
+
     /**
      * @return Collection
      */
@@ -84,5 +98,65 @@ class CategoryRepository
         Category::query()->findOrFail($id)->delete();
 
         return null;
+    }
+
+    /**
+     * @param int $id
+     * @param array|null $period
+     * @return array
+     */
+    public function findTotalById(int $id, array $period = null)
+    {
+        $products = $this->productRepository->findAllByCategory($id);
+
+        return $this->getProductsTotal($products, $period);
+    }
+
+    /**
+     * @param Collection $products
+     * @param array|null $period
+     * @return array
+     */
+    private function getProductsTotal(Collection $products, array $period = null)
+    {
+        $response = [];
+        $sum = 0;
+
+        foreach ($products as $key => $val) {
+            $product = $this->orderProductRepository->findTotalByProductId($val->id, $period);
+
+            $response['data'][] = $product;
+            $sum += $product->total;
+        }
+
+        $response['category']['total'] = $sum;
+
+        return $response;
+    }
+
+    /**
+     * @param array|null $period
+     * @return array
+     */
+    public function findTotal(array $period = null)
+    {
+        $categories = $this->findAll();
+        $response = [];
+
+        foreach ($categories as $key => $val) {
+            $response[] = $this->findTotalByCategoryId($val->id, $period);
+        }
+
+        return $response;
+    }
+
+    /**
+     * @param int $id
+     * @param array|null $period
+     * @return Model|static
+     */
+    public function findTotalByCategoryId(int $id, array $period = null)
+    {
+        return $this->orderProductRepository->findTotalByCategoryId($id, $period);
     }
 }

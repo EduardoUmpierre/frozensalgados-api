@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Order;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class OrderRepository
 {
@@ -103,5 +104,26 @@ class OrderRepository
         }
 
         return null;
+    }
+
+    /**
+     * @param int $id
+     * @param array|null $period
+     * @return Model|static
+     */
+    public function totalByUserId(int $id, array $period = null)
+    {
+        $query = Order::query()
+            ->from('orders as o')
+            ->select(['u.name', DB::raw('COALESCE(SUM(o.total), 0) as total')])
+            ->join('users as u', 'u.id', '=', 'o.user_id')
+            ->where('o.user_id', '=', $id);
+
+        if ($period) {
+            $query->where(DB::raw('DATE(o.created_at)'), '>=', $period[0])
+                ->where(DB::raw('DATE(o.created_at)'), '<=', $period[1]);
+        }
+
+        return $query->firstOrFail();
     }
 }

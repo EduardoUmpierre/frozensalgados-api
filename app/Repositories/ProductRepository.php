@@ -17,6 +17,15 @@ class ProductRepository
     }
 
     /**
+     * @param int $id
+     * @return Collection|static[]
+     */
+    public function findAllByCategory(int $id)
+    {
+        return Product::query()->select(['id'])->where('category_id', '=', $id)->get();
+    }
+
+    /**
      * @param string $search
      * @return Collection
      */

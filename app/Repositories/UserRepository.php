@@ -10,6 +10,17 @@ use Illuminate\Http\Response;
 
 class UserRepository
 {
+    private $orderRepository;
+
+    /**
+     * UserRepository constructor.
+     * @param OrderRepository $or
+     */
+    public function __construct(OrderRepository $or)
+    {
+        $this->orderRepository = $or;
+    }
+
     /**
      * @return Collection
      */
@@ -76,5 +87,31 @@ class UserRepository
         User::query()->findOrFail($id)->delete();
 
         return null;
+    }
+
+    /**
+     * @param int $id
+     * @param array|null $period
+     * @return Model|static
+     */
+    public function findTotalById(int $id, array $period = null)
+    {
+        return $this->orderRepository->totalByUserId($id, $period);
+    }
+
+    /**
+     * @param array|null $period
+     * @return array
+     */
+    public function findTotal(array $period = null)
+    {
+        $users = $this->findAll();
+        $response = [];
+
+        foreach ($users as $key => $val) {
+            $response[] = $this->findTotalById($val->id, $period);
+        }
+
+        return $response;
     }
 }

@@ -92,6 +92,7 @@ class CategoryRepository
     /**
      * @param int $id
      * @return null
+     * @throws \Exception
      */
     public function delete(int $id)
     {
@@ -107,17 +108,19 @@ class CategoryRepository
      */
     public function findTotalById(int $id, array $period = null)
     {
+        $category = $this->findOneById($id);
         $products = $this->productRepository->findAllByCategory($id);
 
-        return $this->getProductsTotal($products, $period);
+        return $this->getProductsTotal($category, $products, $period);
     }
 
     /**
+     * @param Model $category
      * @param Collection $products
      * @param array|null $period
      * @return array
      */
-    private function getProductsTotal(Collection $products, array $period = null)
+    private function getProductsTotal(Model $category, Collection $products, array $period = null)
     {
         $response = [];
         $sum = 0;
@@ -125,11 +128,13 @@ class CategoryRepository
         foreach ($products as $key => $val) {
             $product = $this->orderProductRepository->findTotalByProductId($val->id, $period);
 
-            $response['data'][] = $product;
+            $response['list'][] = $product;
             $sum += $product->total;
         }
 
-        $response['category']['total'] = $sum;
+        $response['id'] = $category->id;
+        $response['name'] = $category->name;
+        $response['total'] = $sum;
 
         return $response;
     }

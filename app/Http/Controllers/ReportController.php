@@ -54,7 +54,7 @@ class ReportController extends Controller
      */
     public function getProductReportById(int $id)
     {
-        return $this->orderProductRepository->findTotalByProductId($id);
+        return $this->orderProductRepository->findOneTotalByProductId($id);
     }
 
     /**
@@ -65,7 +65,7 @@ class ReportController extends Controller
      */
     public function getProductReportBetweenDatesById(int $id, string $from, string $to)
     {
-        return $this->orderProductRepository->findTotalByProductId($id, [$from, $to]);
+        return $this->orderProductRepository->findOneTotalByProductId($id, [$from, $to]);
     }
 
     /**

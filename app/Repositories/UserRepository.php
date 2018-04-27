@@ -81,6 +81,7 @@ class UserRepository
     /**
      * @param int $id
      * @return null
+     * @throws \Exception
      */
     public function delete(int $id)
     {
@@ -96,7 +97,10 @@ class UserRepository
      */
     public function findTotalById(int $id, array $period = null)
     {
-        return $this->orderRepository->totalByUserId($id, $period);
+        $response = $this->orderRepository->totalByUserId($id, $period);
+        $response['list'] = $this->orderRepository->findAllByUserId($id);
+
+        return $response;
     }
 
     /**
@@ -107,10 +111,16 @@ class UserRepository
     {
         $users = $this->findAll();
         $response = [];
+        $sum = 0;
 
         foreach ($users as $key => $val) {
-            $response[] = $this->findTotalById($val->id, $period);
+            $seller = $this->findTotalById($val->id, $period);
+            $sum += $seller->total;
+
+            $response['list'][] = $seller;
         }
+
+        $response['total'] = $sum;
 
         return $response;
     }

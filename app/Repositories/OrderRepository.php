@@ -126,4 +126,27 @@ class OrderRepository
 
         return $query->firstOrFail();
     }
+
+    /**
+     * @param int $id
+     * @param array|null $period
+     * @return Collection|static[]
+     */
+    public function findAllByUserId(int $id, array $period = null)
+    {
+        $query = Order::query()
+            ->from('orders as o')
+            ->select('o.total', 'o.created_at', 'c.name as name')
+            ->join('customers as c', 'c.id', '=', 'o.customer_id')
+            ->where('o.user_id', '=', $id);
+
+        if ($period) {
+            $query->where(DB::raw('DATE(o.created_at)'), '>=', $period[0])
+                ->where(DB::raw('DATE(o.created_at)'), '<=', $period[1]);
+        }
+
+        $query->orderBy('o.created_at', 'DESC');
+
+        return $query->get();
+    }
 }

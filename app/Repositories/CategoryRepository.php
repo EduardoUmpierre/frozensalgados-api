@@ -147,10 +147,16 @@ class CategoryRepository
     {
         $categories = $this->findAll();
         $response = [];
+        $sum = 0;
 
         foreach ($categories as $key => $val) {
-            $response[] = $this->findTotalByCategoryId($val->id, $period);
+            $category = $this->findTotalByCategoryId($val->id, $period);
+
+            $response['list'][] = $category;
+            $sum += $category->total;
         }
+
+        $response['total'] = $sum;
 
         return $response;
     }

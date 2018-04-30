@@ -43,7 +43,7 @@ class OrderProductRepository
     {
         $query = OrderProduct::query()
             ->from('orders_products as op')
-            ->select(['p.id', 'p.name', DB::raw('COALESCE(SUM(op.unit_price * op.quantity), 0) as total')])
+            ->select(['p.id', 'p.name', DB::raw('COALESCE(SUM(op.quantity), 0) as quantity'), DB::raw('COALESCE(SUM(op.unit_price * op.quantity), 0) as total')])
             ->join('products as p', 'p.id', '=', 'op.product_id')
             ->where('op.product_id', '=', $id);
 
@@ -121,7 +121,7 @@ class OrderProductRepository
     {
         $query = OrderProduct::query()
             ->from('orders_products as op')
-            ->select(['o.id', 'o.created_at', 'c.name', 'o.total'])
+            ->select(['o.id', 'o.created_at', 'c.name', 'o.total', 'op.quantity'])
             ->join('orders as o', 'o.id', '=', 'op.order_id')
             ->join('customers as c', 'c.id', '=', 'o.customer_id')
             ->where('op.product_id', '=', $id);

@@ -65,7 +65,7 @@ class OrderRepository
     {
         return Order::query()
             ->select('id')
-            ->with(['orderProduct', 'orderProduct.product'])
+            ->with(['orderProduct', 'orderProduct.product', 'orderProduct.product.category'])
             ->where(['orders.id' => $id, 'user_id' => $user])
             ->firstOrFail();
     }

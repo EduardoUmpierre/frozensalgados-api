@@ -132,7 +132,7 @@ class CustomerRepository
     {
         $query = Customer::query()
             ->from('customers as c')
-            ->select(['c.id', 'c.name', DB::raw('COALESCE(SUM(o.total), 0) as total')])
+            ->select(['c.id', 'c.name', DB::raw('COALESCE(COUNT(o.id), 0) as quantity'), DB::raw('COALESCE(SUM(o.total), 0) as total')])
             ->join('orders as o', 'o.customer_id', '=', 'c.id')
             ->where('o.customer_id', '=', $id);
 

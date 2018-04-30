@@ -115,7 +115,7 @@ class OrderRepository
     {
         $query = Order::query()
             ->from('orders as o')
-            ->select(['u.id', 'u.name', DB::raw('COALESCE(SUM(o.total), 0) as total')])
+            ->select(['u.id', 'u.name', DB::raw('COALESCE(COUNT(o.id), 0) as quantity'), DB::raw('COALESCE(SUM(o.total), 0) as total')])
             ->join('users as u', 'u.id', '=', 'o.user_id')
             ->where('o.user_id', '=', $id);
 

@@ -98,7 +98,7 @@ class UserRepository
     public function findTotalById(int $id, array $period = null)
     {
         $response = $this->orderRepository->totalByUserId($id, $period);
-        $response['list'] = $this->orderRepository->findAllByUserId($id);
+        $response['list'] = $this->orderRepository->findAllByUserId($id, $period);
 
         return $response;
     }

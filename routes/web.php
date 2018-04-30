@@ -106,5 +106,10 @@ $router->group(['prefix' => 'api/v1', 'middleware' => ['auth']], function () use
         $router->get('/sellers/{from}/{to}', 'ReportController@getSellerReportBetweenDates');
         $router->get('/sellers/{id}', 'ReportController@getSellerReportById');
         $router->get('/sellers/{id}/{from}/{to}', 'ReportController@getSellerReportBetweenDatesById');
+
+        $router->get('/customers', 'ReportController@getCustomerReport');
+        $router->get('/customers/{from}/{to}', 'ReportController@getCustomerReportBetweenDates');
+        $router->get('/customers/{id}', 'ReportController@getCustomerReportById');
+        $router->get('/customers/{id}/{from}/{to}', 'ReportController@getCustomerReportBetweenDatesById');
     });
 });

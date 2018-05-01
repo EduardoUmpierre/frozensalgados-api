@@ -122,6 +122,10 @@ class UserRepository
 
         $response['total'] = $sum;
 
+        usort($response['list'], function ($a, $b) {
+            return $b['total'] <=> $a['total'];
+        });
+
         return $response;
     }
 }

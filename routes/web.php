@@ -92,24 +92,43 @@ $router->group(['prefix' => 'api/v1', 'middleware' => ['auth']], function () use
      * Reports
      */
     $router->group(['prefix' => 'reports'], function () use ($router) {
-        $router->get('/products', 'ReportController@getProductReport');
-        $router->get('/products/{from}/{to}', 'ReportController@getProductReportBetweenDates');
-        $router->get('/products/{id}', 'ReportController@getProductReportById');
-        $router->get('/products/{id}/{from}/{to}', 'ReportController@getProductReportBetweenDatesById');
+        $router->group(['prefix' => 'products'], function () use ($router) {
+            $router->get('/', 'ReportController@getProductReport');
+            $router->get('/{from}/{to}', 'ReportController@getProductReportBetweenDates');
+            $router->get('/{id}', 'ReportController@getProductReportById');
+            $router->get('/{id}/{from}/{to}', 'ReportController@getProductReportBetweenDatesById');
+        });
 
-        $router->get('/categories', 'ReportController@getCategoryReport');
-        $router->get('/categories/{from}/{to}', 'ReportController@getCategoryReportBetweenDates');
-        $router->get('/categories/{id}', 'ReportController@getCategoryReportById');
-        $router->get('/categories/{id}/{from}/{to}', 'ReportController@getCategoryReportBetweenDatesById');
+        $router->group(['prefix' => 'categories'], function () use ($router) {
+            $router->get('/', 'ReportController@getCategoryReport');
+            $router->get('/{from}/{to}', 'ReportController@getCategoryReportBetweenDates');
+            $router->get('/{id}', 'ReportController@getCategoryReportById');
+            $router->get('/{id}/{from}/{to}', 'ReportController@getCategoryReportBetweenDatesById');
+        });
 
-        $router->get('/sellers', 'ReportController@getSellerReport');
-        $router->get('/sellers/{from}/{to}', 'ReportController@getSellerReportBetweenDates');
-        $router->get('/sellers/{id}', 'ReportController@getSellerReportById');
-        $router->get('/sellers/{id}/{from}/{to}', 'ReportController@getSellerReportBetweenDatesById');
+        $router->group(['prefix' => 'sellers'], function () use ($router) {
+            $router->get('/', 'ReportController@getSellerReport');
+            $router->get('/{from}/{to}', 'ReportController@getSellerReportBetweenDates');
+            $router->get('/{id}', 'ReportController@getSellerReportById');
+            $router->get('/{id}/{from}/{to}', 'ReportController@getSellerReportBetweenDatesById');
+        });
 
-        $router->get('/customers', 'ReportController@getCustomerReport');
-        $router->get('/customers/{from}/{to}', 'ReportController@getCustomerReportBetweenDates');
-        $router->get('/customers/{id}', 'ReportController@getCustomerReportById');
-        $router->get('/customers/{id}/{from}/{to}', 'ReportController@getCustomerReportBetweenDatesById');
+        $router->group(['prefix' => 'customers'], function () use ($router) {
+            $router->get('/', 'ReportController@getCustomerReport');
+            $router->get('/{from}/{to}', 'ReportController@getCustomerReportBetweenDates');
+            $router->get('/{id}', 'ReportController@getCustomerReportById');
+            $router->get('/{id}/{from}/{to}', 'ReportController@getCustomerReportBetweenDatesById');
+        });
+
+        $router->group(['prefix' => 'orders'], function () use ($router) {
+            $router->get('/', 'ReportController@getOrderReport');
+            $router->get('/{from}/{to}', 'ReportController@getOrderReportBetweenDates');
+            $router->get('/{id}', 'ReportController@getOrderReportById');
+            $router->get('/{id}/{from}/{to}', 'ReportController@getOrderReportBetweenDatesById');
+        });
+
+        $router->group(['prefix' => 'period'], function () use ($router) {
+            $router->get('/{from}/{to}', 'ReportController@getPeriodReport');
+        });
     });
 });

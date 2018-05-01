@@ -52,6 +52,8 @@ class OrderProductRepository
                 ->where(DB::raw('DATE(op.created_at)'), '<=', $period[1]);
         }
 
+        $query->orderBy('total', 'DESC');
+
         return $query->firstOrFail();
     }
 
@@ -87,6 +89,10 @@ class OrderProductRepository
 
         $response['total'] = $sum;
 
+        usort($response['list'], function ($a, $b) {
+            return $b['total'] <=> $a['total'];
+        });
+
         return $response;
     }
 
@@ -108,6 +114,8 @@ class OrderProductRepository
             $query->where(DB::raw('DATE(op.created_at)'), '>=', $period[0])
                 ->where(DB::raw('DATE(op.created_at)'), '<=', $period[1]);
         }
+
+        $query->orderBy('total', 'DESC');
 
         return $query->firstOrFail();
     }

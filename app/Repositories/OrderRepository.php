@@ -13,6 +13,9 @@ class OrderRepository
     private $orderProductRepository;
     private $productRepository;
 
+    /**
+     * OrderRepository constructor.
+     */
     public function __construct()
     {
         $this->customerRepository = app(CustomerRepository::class);
@@ -148,5 +151,31 @@ class OrderRepository
         $query->orderBy('o.created_at', 'DESC');
 
         return $query->get();
+    }
+
+    /**
+     * @param array $period
+     * @return array
+     */
+    public function findReport(array $period = null)
+    {
+        $orders = Order::query()->get();
+        $response = [];
+        $sum = 0;
+
+        foreach ($orders as $key => $val) {
+            $order = $this->findTotalByOrderId($val->id, $period);
+
+            $response['list'][] = $order;
+            $sum += $order->total;
+        }
+
+        $response['total'] = $sum;
+
+        usort($response['list'], function ($a, $b) {
+            return $b['total'] <=> $a['total'];
+        });
+
+        return $response;
     }
 }

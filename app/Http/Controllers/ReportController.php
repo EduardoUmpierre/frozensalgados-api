@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Repositories\CategoryRepository;
 use App\Repositories\CustomerRepository;
 use App\Repositories\OrderProductRepository;
+use App\Repositories\ReportRepository;
 use App\Repositories\ProductRepository;
 use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
@@ -16,6 +17,7 @@ class ReportController extends Controller
     private $categoryRepository;
     private $userRepository;
     private $customerRepository;
+    private $reportRepository;
 
     /**
      * ReportController constructor.
@@ -24,15 +26,17 @@ class ReportController extends Controller
      * @param CategoryRepository $cr
      * @param UserRepository $ur
      * @param CustomerRepository $cur
+     * @param ReportRepository $rr
      */
     public function __construct(ProductRepository $pr, OrderProductRepository $opr, CategoryRepository $cr,
-                                UserRepository $ur, CustomerRepository $cur)
+                                UserRepository $ur, CustomerRepository $cur, ReportRepository $rr)
     {
         $this->productRepository = $pr;
         $this->orderProductRepository = $opr;
         $this->categoryRepository = $cr;
         $this->userRepository = $ur;
         $this->customerRepository = $cur;
+        $this->reportRepository = $rr;
     }
 
     /**
@@ -187,5 +191,53 @@ class ReportController extends Controller
     public function getCustomerReportBetweenDatesById(int $id, string $from, string $to)
     {
         return $this->customerRepository->findReportById($id, [$from, $to]);
+    }
+
+    /**
+     * @param string $from
+     * @param string $to
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getPeriodReport(string $from, string $to)
+    {
+        return $this->reportRepository->findReport([$from, $to]);
+    }
+
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getOrderReport()
+    {
+        return $this->reportRepository->findOrderReport();
+    }
+
+    /**
+     * @param string $from
+     * @param string $to
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getOrderReportBetweenDates(string $from, string $to)
+    {
+        return $this->reportRepository->findOrderReport([$from, $to]);
+    }
+
+    /**
+     * @param int $id
+     * @return mixed
+     */
+    public function getOrderReportById(int $id)
+    {
+        return $this->reportRepository->findOrderReportById($id);
+    }
+
+    /**
+     * @param int $id
+     * @param string $from
+     * @param string $to
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getOrderReportBetweenDatesById(int $id, string $from, string $to)
+    {
+        return $this->reportRepository->findOrderReportById($id, [$from, $to]);
     }
 }

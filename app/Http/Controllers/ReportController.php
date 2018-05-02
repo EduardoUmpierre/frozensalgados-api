@@ -48,32 +48,59 @@ class ReportController extends Controller
     }
 
     /**
+     * @param Request $request
      * @param string $from
      * @param string $to
      * @return array
      */
-    public function getProductReportBetweenDates(string $from, string $to)
+    public function getProductReportBetweenDates(Request $request, string $from, string $to)
     {
+        $request['from'] = $from;
+        $request['to'] = $to;
+
+        $this->validate($request, [
+            'from' => 'required|date',
+            'to' => 'required|date'
+        ]);
+
         return $this->orderProductRepository->findTotal([$from, $to]);
     }
 
     /**
-     * @param int $id
-     * @return mixed
+     * @param Request $request
+     * @param string $id
+     * @return OrderProductRepository|\Illuminate\Database\Eloquent\Model
      */
-    public function getProductReportById(int $id)
+    public function getProductReportById(Request $request, string $id)
     {
+        $request['id'] = $id;
+
+        $this->validate($request, [
+            'id' => 'required|numeric',
+        ]);
+
         return $this->orderProductRepository->findOneTotalByProductId($id);
     }
 
     /**
-     * @param int $id
+     * @param Request $request
+     * @param string $id
      * @param string $from
      * @param string $to
-     * @return \Illuminate\Database\Eloquent\Model|static
+     * @return OrderProductRepository|\Illuminate\Database\Eloquent\Model
      */
-    public function getProductReportBetweenDatesById(int $id, string $from, string $to)
+    public function getProductReportBetweenDatesById(Request $request, string $id, string $from, string $to)
     {
+        $request['id'] = $id;
+        $request['from'] = $from;
+        $request['to'] = $to;
+
+        $this->validate($request, [
+            'id' => 'required|numeric',
+            'from' => 'required|date',
+            'to' => 'required|date'
+        ]);
+
         return $this->orderProductRepository->findOneTotalByProductId($id, [$from, $to]);
     }
 

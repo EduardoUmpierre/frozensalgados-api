@@ -140,7 +140,7 @@ class ReportRepository
             ->first();
 
         $response['list'] = \DB::table('orders_products AS op')
-            ->select([DB::raw('op.quantity * op.unit_price AS total'), 'op.quantity', 'p.name'])
+            ->select([DB::raw('op.quantity * op.unit_price AS total'), 'op.unit_price', 'op.quantity', 'p.name'])
             ->join('products AS p', 'p.id', '=', 'op.product_id')
             ->where('op.order_id', '=', $id)
             ->orderBy('total', 'DESC')

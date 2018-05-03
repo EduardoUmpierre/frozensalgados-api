@@ -68,6 +68,7 @@ class OrderController extends Controller
         $this->validate($request, [
             'customer' => 'required',
             'order' => 'required',
+            'status' => 'required|numeric|min:1|max:3',
             'payment_method' => 'required|numeric|min:1|max:4',
             'payment_date' => 'required|date',
             'delivery_date' => 'required|date',

@@ -146,9 +146,10 @@ class OrderTest extends \TestCase
                 'id' => '1'
             ],
             'order' => [
-                ['id' => 1, 'qnt' => 2],
-                ['id' => 2, 'qnt' => 3]
+                ['id' => 1, 'qnt' => 2, 'price' => 50],
+                ['id' => 2, 'qnt' => 3, 'price' => 50]
             ],
+            'status' => '1',
             'payment_method' => '1',
             'payment_date' => '2018-04-16T19:53:44-03:00',
             'delivery_date' => '2018-04-16T19:53:44-03:00',
@@ -175,6 +176,7 @@ class OrderTest extends \TestCase
                 ['id' => 1, 'qnt' => 2],
                 ['id' => 2, 'qnt' => 3]
             ],
+            'status' => '1',
             'payment_method' => '1',
             'payment_date' => '2018-04-16T19:53:44-03:00',
             'delivery_date' => '2018-04-16T19:53:44-03:00',

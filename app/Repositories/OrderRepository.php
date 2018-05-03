@@ -85,17 +85,14 @@ class OrderRepository
         $orderTotal = 0;
 
         foreach ($products as $key => $val) {
-            $price = $this->productRepository->findOneById($val['id'], ['price'])->price;
-
-            $products[$key]['price'] = $price;
-            $orderTotal += $price * $val['qnt'];
+            $orderTotal += $val['price'] * $val['qnt'];
         }
 
         $order = Order::query()->create([
             'customer_id' => $customer->id,
             'total' => $orderTotal,
             'user_id' => $user,
-            'status' => 0,
+            'status' => $params['status'],
             'payment_date' => $params['payment_date'],
             'payment_method' => $params['payment_method'],
             'delivery_date' => $params['delivery_date'],

@@ -40,12 +40,11 @@ class ProductRepository
 
     /**
      * @param int $id
-     * @param array $columns
      * @return Model
      */
-    public function findOneById(int $id, array $columns = ['id', 'name', 'price']): Model
+    public function findOneById(int $id): Model
     {
-        return Product::query()->with('category')->findOrFail($id, $columns);
+        return Product::with(['category'])->findOrFail($id);
     }
 
     /**

@@ -54,6 +54,7 @@ class ProductController extends Controller
     {
         $this->validate($request, [
             'name' => 'required',
+            'weight' => 'required|regex:/^[0-9](\.?[0-9]+)*(\,[0-9]+)$/',
             'price' => 'required|regex:/^[0-9](\.?[0-9]+)*(\,[0-9]+)$/'
         ]);
 
@@ -69,6 +70,7 @@ class ProductController extends Controller
     {
         $this->validate($request, [
             'name' => 'required',
+            'weight' => 'required|regex:/^[0-9](\.?[0-9]+)*(\,[0-9]+)$/',
             'price' => 'required|regex:/^[0-9](\.?[0-9]+)*(\,[0-9]+)$/'
         ]);
 

@@ -53,6 +53,7 @@ class ProductRepository
      */
     public function create(array $params)
     {
+        $params['weight'] = $this->fixCurrencyFormat($params['weight']);
         $params['price'] = $this->fixCurrencyFormat($params['price']);
 
         Product::query()->create($params);
@@ -67,6 +68,7 @@ class ProductRepository
      */
     public function update(array $params, int $id)
     {
+        $params['weight'] = $this->fixCurrencyFormat($params['weight']);
         $params['price'] = $this->fixCurrencyFormat($params['price']);
 
         Product::query()->findOrFail($id)->update($params);

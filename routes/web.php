@@ -13,6 +13,15 @@
 
 Dusterio\LumenPassport\LumenPassport::routes($router);
 
+$router->get('/', function () {
+    $data = [];
+
+    $pdf = app()->make('dompdf.wrapper');
+    $pdf->loadView('order');
+
+    return $pdf->stream();
+});
+
 /**
  * Api
  */

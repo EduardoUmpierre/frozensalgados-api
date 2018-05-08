@@ -35,6 +35,7 @@ $factory->define(App\Customer::class, function (Faker\Generator $faker) {
 $factory->define(App\Product::class, function (Faker\Generator $faker) {
     return [
         'price' => $faker->numberBetween(25, 50),
+        'weight' => $faker->randomFloat(2, 1, 5),
         'category_id' => DB::table('categories')->pluck('id')->random(),
     ];
 });

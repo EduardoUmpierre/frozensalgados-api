@@ -96,7 +96,8 @@ class OrderRepository
             'payment_date' => $params['payment_date'],
             'payment_method' => $params['payment_method'],
             'delivery_date' => $params['delivery_date'],
-            'installments' => $params['installments']
+            'installments' => $params['installments'],
+            'comments' => $params['comments']
         ]);
 
         foreach ($products as $key => $val) {
@@ -174,5 +175,10 @@ class OrderRepository
         });
 
         return $response;
+    }
+
+    public function findOnePdfDataById(int $id)
+    {
+        return Order::with(['customer', 'orderProduct', 'orderProduct.product'])->findOrFail($id);
     }
 }

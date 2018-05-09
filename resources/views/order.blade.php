@@ -69,7 +69,7 @@
                             </td>
                             <td width="20%" align="center">
                                 <div style="font-size: 16px; font-weight: 600;">Pedido</div>
-                                <div style="font-size: 16px; font-weight: 600;">4293</div>
+                                <div style="font-size: 16px; font-weight: 600;">{{ $order['id'] }}</div>
                                 <span style="display: block; font-size: 9px;">Emitido em 30/04/18 00:00</span>
                             </td>
                         </tr>
@@ -91,15 +91,15 @@
                         <tr valign="top">
                             <td width="60%">
                                 <div style="font-size: 7px;">Nome/Razão Social</div>
-                                <span style="display: block; font-size: 14px;">***SUPERMERCADO GECEPEL LTDA***</span>
+                                <span style="display: block; font-size: 14px;">{{ $order['customer']['name'] }}</span>
                             </td>
                             <td width="20%">
                                 <div style="font-size: 7px;">Código</div>
-                                <span style="display: block; font-size: 14px;">0030</span>
+                                <span style="display: block; font-size: 14px;">{{ $order['customer']['id'] }}</span>
                             </td>
                             <td width="20%">
                                 <div style="font-size: 7px;">CNPJ/CPF</div>
-                                <span style="display: block; font-size: 14px;">92.733.559/0007-34</span>
+                                <span style="display: block; font-size: 14px;">{{ $order['customer']['cnpj'] }}</span>
                             </td>
                         </tr>
                     </table>
@@ -112,11 +112,11 @@
                         <tr valign="top">
                             <td width="80%">
                                 <div style="font-size: 7px;">Nome Fantasia</div>
-                                <span style="display: block; font-size: 14px;">cachoeirinha</span>
+                                <span style="display: block; font-size: 14px;">{{ $order['customer']['name'] }}</span>
                             </td>
                             <td width="20%">
                                 <div style="font-size: 7px;">Inscrição Estadual/RG</div>
-                                <span style="display: block; font-size: 14px;">0030</span>
+                                <span style="display: block; font-size: 14px;">{{ $order['customer']['ie'] }}</span>
                             </td>
                         </tr>
                     </table>
@@ -129,15 +129,15 @@
                         <tr valign="top">
                             <td width="50%">
                                 <div style="font-size: 7px;">Endereço</div>
-                                <span style="display: block; font-size: 14px;">R CURITIBA, 610</span>
+                                <span style="display: block; font-size: 14px;">{{ $order['customer']['address'] }}</span>
                             </td>
                             <td width="37%">
                                 <div style="font-size: 7px;">Bairro</div>
-                                <span style="display: block; font-size: 14px;">VILA ANAIR</span>
+                                <span style="display: block; font-size: 14px;">{{ $order['customer']['district'] }}</span>
                             </td>
                             <td width="13%">
                                 <div style="font-size: 7px;">CEP</div>
-                                <span style="display: block; font-size: 14px;">94955-130</span>
+                                <span style="display: block; font-size: 14px;">{{ $order['customer']['cep'] }}</span>
                             </td>
                         </tr>
                     </table>
@@ -150,15 +150,15 @@
                         <tr valign="top">
                             <td width="50%">
                                 <div style="font-size: 7px;">Município</div>
-                                <span style="display: block; font-size: 14px;">CACHOEIRINHA</span>
+                                <span style="display: block; font-size: 14px;">{{ $order['customer']['city'] }}</span>
                             </td>
                             <td width="20%">
                                 <div style="font-size: 7px;">Fone</div>
-                                <span style="display: block; font-size: 14px;">(51) 3333-3978</span>
+                                <span style="display: block; font-size: 14px;">{{ $order['customer']['phone'] }}</span>
                             </td>
                             <td width="5%">
                                 <div style="font-size: 7px;">UF</div>
-                                <span style="display: block; font-size: 14px;">RS</span>
+                                <span style="display: block; font-size: 14px;"></span>
                             </td>
                             <td width="25%">
                                 <div style="font-size: 7px;">Complemento</div>
@@ -183,7 +183,7 @@
                         <tr valign="top">
                             <td>
                                 <div style="font-size: 7px;">Valor total dos produtos</div>
-                                <span style="display: block; font-size: 14px; text-align: right;">547,72</span>
+                                <span style="display: block; font-size: 14px; text-align: right;">{{ $order['total'] }}</span>
                             </td>
                             <td width="85">
                                 <div style="font-size: 7px;">Desc./Acrés. em percentual</div>
@@ -207,7 +207,7 @@
                             </td>
                             <td>
                                 <div style="font-size: 7px;">Valor total do pedido</div>
-                                <span style="display: block; font-size: 14px; font-weight: 600; text-align: right;">547,72</span>
+                                <span style="display: block; font-size: 14px; font-weight: 600; text-align: right;">{{ $order['total'] }}</span>
                             </td>
                         </tr>
                     </table>
@@ -228,7 +228,7 @@
                         <tr valign="top">
                             <td width="20%">
                                 <div style="font-size: 7px;">Previsão de entrega</div>
-                                <span style="display: block; font-size: 14px;">02/05/18</span>
+                                <span style="display: block; font-size: 14px;">{{ $order['delivery_date'] }}</span>
                             </td>
                             <td width="20%">
                                 <div style="font-size: 7px;">Ordem de compra</div>
@@ -257,11 +257,11 @@
                             </td>
                             <td width="40%">
                                 <div style="font-size: 7px;">Forma de pagamento</div>
-                                <span style="display: block; font-size: 14px;">Boleto</span>
+                                <span style="display: block; font-size: 14px;">{{ $order['payment_method'] }}</span>
                             </td>
                             <td width="10%">
                                 <div style="font-size: 7px;">Peso em KG</div>
-                                <span style="display: block; font-size: 14px;">24,100</span>
+                                <span style="display: block; font-size: 14px;">{{ $weight }}</span>
                             </td>
                         </tr>
                     </table>
@@ -274,7 +274,7 @@
                         <tr valign="top">
                             <td width="100%">
                                 <div style="font-size: 7px;">Condição de pagamento</div>
-                                <span style="display: block; font-size: 14px;">(21) 23/05/18</span>
+                                <span style="display: block; font-size: 14px;">(21) {{ $order['delivery_date'] }}</span>
                             </td>
                         </tr>
                     </table>
@@ -287,7 +287,7 @@
                         <tr valign="top">
                             <td width="100%">
                                 <div style="font-size: 7px;">Observação</div>
-                                <span style="display: block; font-size: 14px;">&nbsp;</span>
+                                <span style="display: block; font-size: 14px;">{{ $order['comments']}}</span>
                             </td>
                         </tr>
                     </table>
@@ -322,8 +322,8 @@
             <tr valign="top">
                 <td class="no-padding">
                     <table width="100%" align="center" cellpadding="0" cellspacing="0">
-                        @for ($i = 0; $i < 180; $i++)
-                            @if ($i > 0 && ($i == 30 || ($i - 30) % 60 == 0))
+                        @foreach ($order['order_product'] as $product)
+                            @if ($loop->index > 0 && ($loop->index == 30 || ($loop->index - 30) % 60 == 0))
                                 </table>
 
                                 <div class="page-break"></div>
@@ -331,7 +331,7 @@
                                 <table width="100%" align="center" cellpadding="0" cellspacing="0">
                             @endif
 
-                            @if ($i == 0 || $i == 30 || ($i - 30) % 60 == 0)
+                            @if ($loop->index == 0 || $loop->index == 30 || ($loop->index - 30) % 60 == 0)
                                 <tr valign="top">
                                     <td style="border-bottom: 1px solid #000; border-top: 1px solid #000;">
                                         <div style="font-size: 7px;">Código do produto</div>
@@ -364,25 +364,25 @@
                             @endif
                         <tr valign="top">
                             <td style="border-top: 0; border-bottom: 0; border-left: 0;">
-                                <div style="font-size: 9px;">{{ ($i - 30) % 60 }}</div>
+                                <div style="font-size: 9px;">{{ $product['product']['id'] }}</div>
                             </td>
                             <td style="border-top: 0; border-bottom: 0; border-left: 0;">
-                                <div style="font-size: 9px;">BOLINHA DE QUEIJO FROZEN 2 KG</div>
+                                <div style="font-size: 9px;">{{ $product['product']['name'] }}</div>
                             </td>
                             <td style="border-top: 0; border-bottom: 0; border-left: 0;" align="center">
                                 <div style="font-size: 9px;">&nbsp;</div>
                             </td>
                             <td style="border-top: 0; border-bottom: 0; border-left: 0;">
-                                <div style="font-size: 9px;">PCT/1</div>
+                                <div style="font-size: 9px;">{{ $product['quantity'] }}</div>
                             </td>
                             <td style="border-top: 0; border-bottom: 0; border-left: 0;" align="right">
-                                <div style="font-size: 9px;">2,000</div>
+                                <div style="font-size: 9px;">{{ $product['quantity'] * $product['product']['weight'] }}</div>
                             </td>
                             <td style="border-top: 0; border-bottom: 0; border-left: 0;" align="right">
-                                <div style="font-size: 9px;">27,50</div>
+                                <div style="font-size: 9px;">{{ $product['unit_price'] }}</div>
                             </td>
                             <td style="border-top: 0; border-bottom: 0; border-left: 0;" align="right">
-                                <div style="font-size: 9px;">55,00</div>
+                                <div style="font-size: 9px;">R$ {{ $product['quantity'] * $product['unit_price'] }}</div>
                             </td>
                             <td style="border-top: 0; border-bottom: 0; border-left: 0;" align="center">
                                 <div style="font-size: 9px;">0,00</div>
@@ -391,7 +391,7 @@
                                 <div style="font-size: 9px;">&nbsp;</div>
                             </td>
                         </tr>
-                        @endfor
+                        @endforeach
                     </table>
                 </td>
             </tr>

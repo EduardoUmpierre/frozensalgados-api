@@ -13,15 +13,6 @@
 
 Dusterio\LumenPassport\LumenPassport::routes($router);
 
-$router->get('/', function () {
-    $data = [];
-
-    $pdf = app()->make('dompdf.wrapper');
-    $pdf->loadView('order');
-
-    return $pdf->stream();
-});
-
 /**
  * Api
  */
@@ -53,6 +44,7 @@ $router->group(['prefix' => 'api/v1', 'middleware' => ['auth']], function () use
      */
     $router->group(['prefix' => 'orders'], function () use ($router) {
         $router->get('/', 'OrderController@getAll');
+        $router->get('/{id}/download', 'PdfController@downloadOrderPdf');
         $router->get('/{id}', 'OrderController@getOne');
         $router->get('/customer/{id}', 'OrderController@getAllByCustomer');
         $router->get('/{id}/products', 'OrderController@getOneByCustomer');

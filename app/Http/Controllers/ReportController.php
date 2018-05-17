@@ -113,32 +113,59 @@ class ReportController extends Controller
     }
 
     /**
+     * @param Request $request
      * @param string $from
      * @param string $to
      * @return array
      */
-    public function getCategoryReportBetweenDates(string $from, string $to)
+    public function getCategoryReportBetweenDates(Request $request, string $from, string $to)
     {
+        $request['from'] = $from;
+        $request['to'] = $to;
+
+        $this->validate($request, [
+            'from' => 'required|date',
+            'to' => 'required|date'
+        ]);
+
         return $this->categoryRepository->findTotal([$from, $to]);
     }
 
     /**
-     * @param int $id
-     * @return mixed
+     * @param Request $request
+     * @param string $id
+     * @return array
      */
-    public function getCategoryReportById(int $id)
+    public function getCategoryReportById(Request $request, string $id)
     {
+        $request['id'] = $id;
+
+        $this->validate($request, [
+            'id' => 'required|numeric',
+        ]);
+
         return $this->categoryRepository->findTotalById($id);
     }
 
     /**
-     * @param int $id
+     * @param Request $request
+     * @param string $id
      * @param string $from
      * @param string $to
      * @return array
      */
-    public function getCategoryReportBetweenDatesById(int $id, string $from, string $to)
+    public function getCategoryReportBetweenDatesById(Request $request, string $id, string $from, string $to)
     {
+        $request['id'] = $id;
+        $request['from'] = $from;
+        $request['to'] = $to;
+
+        $this->validate($request, [
+            'id' => 'required|numeric',
+            'from' => 'required|date',
+            'to' => 'required|date'
+        ]);
+
         return $this->categoryRepository->findTotalById($id, [$from, $to]);
     }
 

@@ -119,7 +119,8 @@ class ProductTest extends \TestCase
         // Valid request
         $this->post(ProductTest::URL, [
             'name' => 'Teste',
-            'price' => '12,00'
+            'price' => '12,00',
+            'weight' => '2,00'
         ]);
         $this->assertResponseStatus(201);
     }
@@ -140,7 +141,8 @@ class ProductTest extends \TestCase
         // Valid request
         $this->put(ProductTest::URL . '1', [
             'name' => 'Produto 1',
-            'price' => '123,00'
+            'price' => '123,00',
+            'weight' => '2,00'
         ]);
         $this->assertResponseOk();
 
@@ -167,7 +169,8 @@ class ProductTest extends \TestCase
         // Invalid id
         $this->put(ProductTest::URL . '234324', [
             'name' => '123456',
-            'price' => '1234,00'
+            'price' => '1234,00',
+            'weight' => '2,00'
         ]);
         $this->assertResponseStatus(404);
     }

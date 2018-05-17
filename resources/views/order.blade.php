@@ -380,7 +380,11 @@
                         <div style="font-size: 9px;">{{ $product['quantity'] }}</div>
                     </td>
                     <td style="border-top: 0; border-bottom: 0; border-left: 0;" align="right">
-                        <div style="font-size: 9px;">{{ $product['quantity'] * $product['product']['weight'] }}</div>
+                        <div style="font-size: 9px;">
+                            @if(!empty($product['product']['weight']))
+                                {{ $product['quantity'] * $product['product']['weight'] }}
+                            @endif
+                        </div>
                     </td>
                     <td style="border-top: 0; border-bottom: 0; border-left: 0;" align="right">
                         <div style="font-size: 9px;">{{ $product['unit_price'] }}</div>

@@ -88,7 +88,7 @@ class OrderRepository
             $orderTotal += $val['price'] * $val['qnt'];
         }
 
-        $order = Order::query()->create([
+        $orderParams = [
             'customer_id' => $customer->id,
             'total' => $orderTotal,
             'user_id' => $user,
@@ -96,9 +96,14 @@ class OrderRepository
             'payment_date' => $params['payment_date'],
             'payment_method' => $params['payment_method'],
             'delivery_date' => $params['delivery_date'],
-            'installments' => $params['installments'],
-            'comments' => $params['comments']
-        ]);
+            'installments' => $params['installments']
+        ];
+
+        if (isset($params['comments'])) {
+            $orderParams['comments'] = $params['comments'];
+        }
+
+        $order = Order::query()->create($orderParams);
 
         foreach ($products as $key => $val) {
             $this->orderProductRepository->create($order->id, $val['id'], $val['qnt'], $val['price']);

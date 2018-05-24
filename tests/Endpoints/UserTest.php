@@ -41,7 +41,8 @@ class UserTest extends \TestCase
             'id' => $user->id,
             'name' => $user->name,
             'email' => (string)$user->email,
-            'role' => (string)$user->role
+            'role' => (string)$user->role,
+            'is_active' => $user->is_active
         ]);
     }
 
@@ -67,7 +68,8 @@ class UserTest extends \TestCase
             'id' => $user->id,
             'name' => $user->name,
             'email' => (string)$user->email,
-            'role' => (string)$user->role
+            'role' => (string)$user->role,
+            'is_active' => $user->is_active
         ]);
 
         // Accessing invalid user should give 404
@@ -99,7 +101,8 @@ class UserTest extends \TestCase
             'cpf' => '123456789',
             'role' => '1',
             'password' => '123',
-            'passwordRepeat' => '123'
+            'passwordRepeat' => '123',
+            'is_active' => 1
         ]);
         $this->assertResponseStatus(201);
 
@@ -109,7 +112,8 @@ class UserTest extends \TestCase
             'email' => 'test@test.com',
             'cpf' => '11111',
             'role' => '1',
-            'password' => '123'
+            'password' => '123',
+            'is_active' => 1
         ]);
         $this->assertResponseStatus(422);
 
@@ -120,7 +124,8 @@ class UserTest extends \TestCase
             'cpf' => '11112',
             'role' => '1',
             'password' => '123',
-            'passwordRepeat' => '321'
+            'passwordRepeat' => '321',
+            'is_active' => 1
         ]);
         $this->assertResponseStatus(405);
 
@@ -130,7 +135,8 @@ class UserTest extends \TestCase
             'email' => 'test2@test.com',
             'cpf' => '11113',
             'role' => '1',
-            'password' => '123'
+            'password' => '123',
+            'is_active' => 1
         ]);
         $this->assertResponseStatus(422);
     }
@@ -153,7 +159,8 @@ class UserTest extends \TestCase
             'name' => 'Eduardo',
             'email' => '12312312312',
             'cpf' => '12312312312',
-            'role' => '2'
+            'role' => '2',
+            'is_active' => 1
         ]);
         $this->assertResponseOk();
 
@@ -165,6 +172,7 @@ class UserTest extends \TestCase
             'role' => '2',
             'password' => '123',
             'passwordRepeat' => '123',
+            'is_active' => 1
         ]);
         $this->assertResponseOk();
 
@@ -174,7 +182,8 @@ class UserTest extends \TestCase
             'email' => '12312312312',
             'cpf' => '12312312312',
             'role' => '2',
-            'password' => '123'
+            'password' => '123',
+            'is_active' => 1
         ]);
         $this->assertResponseStatus(405);
 
@@ -185,7 +194,8 @@ class UserTest extends \TestCase
             'cpf' => '12312312312',
             'role' => '2',
             'password' => '123',
-            'passwordRepeat' => '321'
+            'passwordRepeat' => '321',
+            'is_active' => 1
         ]);
         $this->assertResponseStatus(405);
 
@@ -194,7 +204,8 @@ class UserTest extends \TestCase
             'name' => 'Eduardo',
             'email' => '321312312312',
             'cpf' => '321312312312',
-            'role' => '2'
+            'role' => '2',
+            'is_active' => 1
         ]);
         $this->assertResponseStatus(404);
 
@@ -203,7 +214,8 @@ class UserTest extends \TestCase
             'name' => 'Eduardo',
             'email' => '321312312312',
             'cpf' => '321312312312',
-            'role' => '2'
+            'role' => '2',
+            'is_active' => 1
         ]);
         $this->assertResponseStatus(405);
     }

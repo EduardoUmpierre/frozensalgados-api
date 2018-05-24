@@ -51,7 +51,8 @@ class UserController extends Controller
             'cpf' => 'required|unique:users',
             'role' => 'required',
             'password' => 'required',
-            'passwordRepeat' => 'required'
+            'passwordRepeat' => 'required',
+            'is_active' => 'required|boolean'
         ]);
 
         return $this->userRepository->create($request->all());
@@ -68,7 +69,8 @@ class UserController extends Controller
             'name' => 'required',
             'email' => 'required',
             'cpf' => 'required',
-            'role' => 'required'
+            'role' => 'required',
+            'is_active' => 'required|boolean'
         ]);
 
         return $this->userRepository->update($request->all(), $id);
@@ -77,6 +79,7 @@ class UserController extends Controller
     /**
      * @param int $id
      * @return JsonResponse
+     * @throws \Exception
      */
     public function delete(int $id): JsonResponse
     {

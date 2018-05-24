@@ -19,7 +19,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'role', 'cpf', 'password'
+        'name', 'email', 'role', 'cpf', 'password', 'is_active'
     ];
 
     /**
@@ -39,5 +39,9 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public function orders()
     {
         return $this->belongsToMany('App\Order', 'orders', 'user_id', 'user_id');
+    }
+
+    public function findForPassport($identifier) {
+        return $this->where(['email' => $identifier, 'is_active' => 1])->first();
     }
 }

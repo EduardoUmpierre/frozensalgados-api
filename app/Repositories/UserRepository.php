@@ -26,7 +26,7 @@ class UserRepository
      */
     public function findAll(): Collection
     {
-        return User::query()->select(['id', 'name', 'email', 'role'])->get();
+        return User::query()->select(['id', 'name', 'email', 'role', 'is_active'])->orderByDesc('is_active')->get();
     }
 
     /**

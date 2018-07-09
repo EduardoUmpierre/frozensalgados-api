@@ -37,6 +37,6 @@ class PdfController extends Controller
         $pdf = app()->make('dompdf.wrapper');
         $pdf->loadView('order', ['order' => $order->toArray(), 'weight' => $weight]);
 
-        return $pdf->stream();
+        return $pdf->download();
     }
 }

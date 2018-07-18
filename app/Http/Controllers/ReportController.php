@@ -178,32 +178,59 @@ class ReportController extends Controller
     }
 
     /**
+     * @param Request $request
      * @param string $from
      * @param string $to
      * @return array
      */
-    public function getSellerReportBetweenDates(string $from, string $to)
+    public function getSellerReportBetweenDates(Request $request, string $from, string $to)
     {
+        $request['from'] = $from;
+        $request['to'] = $to;
+
+        $this->validate($request, [
+            'from' => 'required|date',
+            'to' => 'required|date'
+        ]);
+
         return $this->userRepository->findTotal([$from, $to]);
     }
 
     /**
-     * @param int $id
-     * @return mixed
+     * @param Request $request
+     * @param string $id
+     * @return UserRepository|\Illuminate\Database\Eloquent\Model
      */
-    public function getSellerReportById(int $id)
+    public function getSellerReportById(Request $request, string $id)
     {
+        $request['id'] = $id;
+
+        $this->validate($request, [
+            'id' => 'required|numeric',
+        ]);
+
         return $this->userRepository->findTotalById($id);
     }
 
     /**
-     * @param int $id
+     * @param Request $request
+     * @param string $id
      * @param string $from
      * @param string $to
-     * @return \Illuminate\Database\Eloquent\Model|static
+     * @return UserRepository|\Illuminate\Database\Eloquent\Model
      */
-    public function getSellerReportBetweenDatesById(int $id, string $from, string $to)
+    public function getSellerReportBetweenDatesById(Request $request, string $id, string $from, string $to)
     {
+        $request['id'] = $id;
+        $request['from'] = $from;
+        $request['to'] = $to;
+
+        $this->validate($request, [
+            'id' => 'required|numeric',
+            'from' => 'required|date',
+            'to' => 'required|date'
+        ]);
+
         return $this->userRepository->findTotalById($id, [$from, $to]);
     }
 

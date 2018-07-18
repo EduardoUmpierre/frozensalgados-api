@@ -166,11 +166,6 @@ class ReportTest extends \TestCase
         $this->assertResponseOk();
 
         $this->seeJsonStructure([
-            'list' => [
-                '*' => [
-                    'id', 'name', 'total', 'quantity'
-                ]
-            ],
             'id', 'name', 'total'
         ]);
 
@@ -179,12 +174,55 @@ class ReportTest extends \TestCase
         $this->assertResponseOk();
 
         $this->seeJsonStructure([
+            'id', 'name', 'total'
+        ]);
+    }
+
+    /**
+     *
+     */
+    public function testGettingSellerReport()
+    {
+        // Request without authentication
+        $this->get(ReportTest::URL . 'sellers');
+        $this->assertResponseStatus(401);
+
+        // Authentication
+        $user = factory(User::class)->create();
+        $this->actingAs($user);
+
+        // Get all sellers with the authenticated user
+        $this->get(ReportTest::URL . 'sellers');
+        $this->assertResponseOk();
+
+        $this->seeJsonStructure([
             'list' => [
                 '*' => [
-                    'id', 'name', 'total', 'quantity'
+                    'id', 'name', 'quantity', 'total', 'list'
                 ]
-            ],
-            'id', 'name', 'total'
+            ]
+        ]);
+
+        // Request without authentication
+        $this->get(ReportTest::URL . 'sellers/2018-02-01/2018-02-28T13:00:00Z');
+        $this->assertResponseOk();
+
+        $this->get(ReportTest::URL . 'sellers/2018-02-01');
+        $this->assertResponseStatus(422);
+
+        $this->get(ReportTest::URL . 'sellers/2018-02/2018');
+        $this->assertResponseStatus(422);
+
+        // Get all orders with the authenticated user
+        $this->get(ReportTest::URL . 'sellers/2018-02-01/2018-02-28');
+        $this->assertResponseOk();
+
+        $this->seeJsonStructure([
+            'list' => [
+                '*' => [
+                    'id', 'name', 'quantity', 'total', 'list'
+                ]
+            ]
         ]);
     }
 }

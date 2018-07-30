@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Repositories\OrderProductRepository;
 use App\Repositories\OrderRepository;
+use Illuminate\Http\Request;
 
 class PdfController extends Controller
 {
@@ -13,6 +14,7 @@ class PdfController extends Controller
     /**
      * PdfController constructor.
      * @param OrderRepository $or
+     * @param OrderProductRepository $opr
      */
     public function __construct(OrderRepository $or, OrderProductRepository $opr)
     {
@@ -21,10 +23,11 @@ class PdfController extends Controller
     }
 
     /**
+     * @param Request $request
      * @param int $id
      * @return mixed
      */
-    public function downloadOrderPdf(int $id)
+    public function downloadOrderPdf(Request $request, int $id)
     {
         $order = $this->orderRepository->findOnePdfDataById($id);
 
@@ -37,6 +40,12 @@ class PdfController extends Controller
         $pdf = app()->make('dompdf.wrapper');
         $pdf->loadView('order', ['order' => $order->toArray(), 'weight' => $weight]);
 
-        return $pdf->download();
+        $stream = $request->input('stream');
+
+        if ($stream) {
+            return $pdf->stream();
+        }
+
+        return $pdf->download('pedido-' . $id . '.pdf');
     }
 }

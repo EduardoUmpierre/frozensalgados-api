@@ -64,12 +64,12 @@
                         <tr valign="top">
                             <td width="20%"></td>
                             <td width="60%" align="center">
-                                <div style="font-size: 16px; font-weight: 600;">CBJ ALIMENTOS LTDA-FROZEN SALGADOS</div>
+                                <div style="font-size: 16px; font-weight: 600;">CBJ ALIMENTOS LTDA - FROZEN SALGADOS</div>
                                 <span style="display: block; font-size: 14px;">Demétrius Vianna</span>
                             </td>
                             <td width="20%" align="center">
                                 <div style="font-size: 16px; font-weight: 600;">Pedido</div>
-                                <div style="font-size: 16px; font-weight: 600;">{{ $order['id'] }}</div>
+                                <div style="font-size: 16px; font-weight: 600;">{{ sprintf('%04d', $order['id']) }}</div>
                                 <span style="display: block; font-size: 9px;">Emitido em {{ \Carbon\Carbon::parse(\Carbon\Carbon::now(-3))->format('d/m/Y H:i:s') }}</span>
                             </td>
                         </tr>
@@ -183,7 +183,7 @@
                         <tr valign="top">
                             <td>
                                 <div style="font-size: 7px;">Valor total dos produtos</div>
-                                <span style="display: block; font-size: 14px; text-align: right;">{{ $order['total'] }}</span>
+                                <span style="display: block; font-size: 14px; text-align: right;">{{ number_format($order['total'], 2, ',', '.') }}</span>
                             </td>
                             <td width="85">
                                 <div style="font-size: 7px;">Desc./Acrés. em percentual</div>
@@ -207,7 +207,7 @@
                             </td>
                             <td>
                                 <div style="font-size: 7px;">Valor total do pedido</div>
-                                <span style="display: block; font-size: 14px; font-weight: 600; text-align: right;">{{ $order['total'] }}</span>
+                                <span style="display: block; font-size: 14px; font-weight: 600; text-align: right;">{{ number_format($order['total'], 2, ',', '.') }}</span>
                             </td>
                         </tr>
                     </table>
@@ -299,7 +299,7 @@
                                 <div style="font-size: 7px;">Observação</div>
                                 <span style="display: block; font-size: 14px;">
                                     @if(!empty($order['comments']))
-                                                {{ $order['comments'] }}
+                                        {{ $order['comments'] }}
                                     @else
                                         &nbsp;
                                     @endif
@@ -349,38 +349,38 @@
 
                         @if ($loop->index == 0 || $loop->index == 30 || ($loop->index - 30) % 60 == 0)
                             <tr valign="top">
-                                <td style="border-bottom: 1px solid #000; border-top: 1px solid #000;">
-                                    <div style="font-size: 7px;">Código do produto</div>
+                                <td style="border-bottom: 1px solid #000; border-top: 1px solid #000;" width="60">
+                                    <div style="font-size: 7px;">Código produto</div>
                                 </td>
                                 <td style="border-bottom: 1px solid #000; border-top: 1px solid #000;" align="center">
                                     <div style="font-size: 7px;">Descrição do produto</div>
                                 </td>
-                                <td style="border-bottom: 1px solid #000; border-top: 1px solid #000;" align="center">
+                                <td style="border-bottom: 1px solid #000; border-top: 1px solid #000;" align="center" width="30">
                                     <div style="font-size: 7px;">NCM</div>
                                 </td>
-                                <td style="border-bottom: 1px solid #000; border-top: 1px solid #000;">
+                                <td style="border-bottom: 1px solid #000; border-top: 1px solid #000;" width="30">
                                     <div style="font-size: 7px;">Unid.</div>
                                 </td>
-                                <td style="border-bottom: 1px solid #000; border-top: 1px solid #000;" align="right">
+                                <td style="border-bottom: 1px solid #000; border-top: 1px solid #000;" align="right" width="30">
                                     <div style="font-size: 7px;">Quant.</div>
                                 </td>
-                                <td style="border-bottom: 1px solid #000; border-top: 1px solid #000;" align="right">
+                                <td style="border-bottom: 1px solid #000; border-top: 1px solid #000;" align="right" width="50">
                                     <div style="font-size: 7px;">Valor unit.</div>
                                 </td>
-                                <td style="border-bottom: 1px solid #000; border-top: 1px solid #000;" align="right">
+                                <td style="border-bottom: 1px solid #000; border-top: 1px solid #000;" align="right" width="50">
                                     <div style="font-size: 7px;">Valor total</div>
                                 </td>
-                                <td style="border-bottom: 1px solid #000; border-top: 1px solid #000;" align="center">
+                                <td style="border-bottom: 1px solid #000; border-top: 1px solid #000;" align="right" width="20">
                                     <div style="font-size: 7px;">IPI</div>
                                 </td>
-                                <td style="border-bottom: 1px solid #000; border-top: 1px solid #000;">
+                                <td style="border-bottom: 1px solid #000; border-top: 1px solid #000;" width="50">
                                     <div style="font-size: 7px;">Código de barra</div>
                                 </td>
                             </tr>
                         @endif
                         <tr valign="top">
                             <td style="border-top: 0; border-bottom: 0; border-left: 0;">
-                                <div style="font-size: 9px;">{{ $product['product']['id'] }}</div>
+                                <div style="font-size: 9px;">{{ sprintf('%04d', $product['product']['id']) }}</div>
                             </td>
                             <td style="border-top: 0; border-bottom: 0; border-left: 0;">
                                 <div style="font-size: 9px;">{{ $product['product']['name'] }}</div>
@@ -389,21 +389,21 @@
                                 <div style="font-size: 9px;">&nbsp;</div>
                             </td>
                             <td style="border-top: 0; border-bottom: 0; border-left: 0;">
-                                <div style="font-size: 9px;">{{ $product['quantity'] }}</div>
-                            </td>
-                            <td style="border-top: 0; border-bottom: 0; border-left: 0;" align="right">
                                 <div style="font-size: 9px;">
-                                    @if(!empty($product['product']['weight']))
-                                        {{ $product['quantity'] * $product['product']['weight'] }}
-                                    @endif
+                                    PCT/1
                                 </div>
                             </td>
                             <td style="border-top: 0; border-bottom: 0; border-left: 0;" align="right">
-                                <div style="font-size: 9px;">{{ $product['unit_price'] }}</div>
+                                <div style="font-size: 9px;">
+                                    {{ number_format($product['quantity'], 3, ',', '.') }}
+                                </div>
+                            </td>
+                            <td style="border-top: 0; border-bottom: 0; border-left: 0;" align="right">
+                                <div style="font-size: 9px;">{{ number_format($product['unit_price'], 2, ',', '.') }}</div>
                             </td>
                             <td style="border-top: 0; border-bottom: 0; border-left: 0;" align="right">
                                 <div style="font-size: 9px;">
-                                    R$ {{ $product['quantity'] * $product['unit_price'] }}</div>
+                                    R$ {{ number_format($product['quantity'] * $product['unit_price'], 2, ',', '.') }}</div>
                             </td>
                             <td style="border-top: 0; border-bottom: 0; border-left: 0;" align="center">
                                 <div style="font-size: 9px;">0,00</div>

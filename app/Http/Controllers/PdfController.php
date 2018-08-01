@@ -37,15 +37,30 @@ class PdfController extends Controller
             $weight += $val->quantity * $val->product->weight;
         }
 
-        $pdf = app()->make('dompdf.wrapper');
-        $pdf->loadView('order', ['order' => $order->toArray(), 'weight' => $weight]);
+        $params = [
+            'order' => $order->toArray(),
+            'weight' => $weight
+        ];
 
-        $stream = $request->input('stream');
+        return $this->downloadPdf('order', $params, 'pedido-' . $id . '.pdf', !!$request->input('stream'));
+    }
+
+    /**
+     * @param string $view
+     * @param array $params
+     * @param string $filename
+     * @param bool $stream
+     * @return mixed
+     */
+    private function downloadPdf(string $view, array $params, string $filename, bool $stream = false)
+    {
+        $pdf = app()->make('dompdf.wrapper');
+        $pdf->loadView($view, $params);
 
         if ($stream) {
             return $pdf->stream();
         }
 
-        return $pdf->download('pedido-' . $id . '.pdf');
+        return $pdf->download($filename);
     }
 }

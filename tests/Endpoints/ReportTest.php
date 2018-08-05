@@ -43,12 +43,9 @@ class ReportTest extends \TestCase
             ]
         ]);
 
-        // Request without authentication
+        // Request with authentication
         $this->get(ReportTest::URL . 'products/2018-02-01/2018-02-28T13:00:00Z');
         $this->assertResponseOk();
-
-        $this->get(ReportTest::URL . 'products/2018-02-01');
-        $this->assertResponseStatus(422);
 
         $this->get(ReportTest::URL . 'products/2018-02/2018');
         $this->assertResponseStatus(422);
@@ -129,9 +126,6 @@ class ReportTest extends \TestCase
         $this->get(ReportTest::URL . 'categories/2018-02-01/2018-02-28T13:00:00Z');
         $this->assertResponseOk();
 
-        $this->get(ReportTest::URL . 'categories/2018-02-01');
-        $this->assertResponseStatus(422);
-
         $this->get(ReportTest::URL . 'categories/2018-02/2018');
         $this->assertResponseStatus(422);
 
@@ -206,9 +200,6 @@ class ReportTest extends \TestCase
         // Request without authentication
         $this->get(ReportTest::URL . 'sellers/2018-02-01/2018-02-28T13:00:00Z');
         $this->assertResponseOk();
-
-        $this->get(ReportTest::URL . 'sellers/2018-02-01');
-        $this->assertResponseStatus(422);
 
         $this->get(ReportTest::URL . 'sellers/2018-02/2018');
         $this->assertResponseStatus(422);

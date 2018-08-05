@@ -86,7 +86,7 @@ class ReportController extends Controller
      * @param string $to
      * @return array
      */
-    public function getCategoryReportById(Request $request, string $id, string $from, string $to)
+    public function getCategoryReportById(Request $request, string $id, string $from = null, string $to = null)
     {
         $this->validate($this->getValidationRequest($request, $from, $to, $id), $this->getValidationParams($from, $to, $id));
 

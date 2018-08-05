@@ -125,7 +125,7 @@ class OrderRepository
             ->join('users as u', 'u.id', '=', 'o.user_id')
             ->where('o.user_id', '=', $id);
 
-        if ($period) {
+        if ($period && $period[0] && $period[1]) {
             $query->where(DB::raw('DATE(o.created_at)'), '>=', $period[0])
                 ->where(DB::raw('DATE(o.created_at)'), '<=', $period[1]);
         }
@@ -146,7 +146,7 @@ class OrderRepository
             ->join('customers as c', 'c.id', '=', 'o.customer_id')
             ->where('o.user_id', '=', $id);
 
-        if ($period) {
+        if ($period && $period[0] && $period[1]) {
             $query->where(DB::raw('DATE(o.created_at)'), '>=', $period[0])
                 ->where(DB::raw('DATE(o.created_at)'), '<=', $period[1]);
         }
@@ -182,6 +182,10 @@ class OrderRepository
         return $response;
     }
 
+    /**
+     * @param int $id
+     * @return Collection|Model
+     */
     public function findOnePdfDataById(int $id)
     {
         return Order::with(['customer', 'orderProduct', 'orderProduct.product'])->findOrFail($id);

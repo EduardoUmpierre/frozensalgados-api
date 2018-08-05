@@ -136,7 +136,7 @@ class CustomerRepository
             ->join('orders as o', 'o.customer_id', '=', 'c.id')
             ->where('o.customer_id', '=', $id);
 
-        if ($period) {
+        if ($period && $period[0] && $period[1]) {
             $query->where(DB::raw('DATE(o.created_at)'), '>=', $period[0])
                 ->where(DB::raw('DATE(o.created_at)'), '<=', $period[1]);
         }
@@ -156,7 +156,7 @@ class CustomerRepository
             ->join('customers as c', 'c.id', '=', 'o.customer_id')
             ->where('o.customer_id', '=', $id);
 
-        if ($period) {
+        if ($period && $period[0] && $period[1]) {
             $query->where(DB::raw('DATE(o.created_at)'), '>=', $period[0])
                 ->where(DB::raw('DATE(o.created_at)'), '<=', $period[1]);
         }

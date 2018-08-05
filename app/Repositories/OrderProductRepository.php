@@ -47,7 +47,7 @@ class OrderProductRepository
             ->join('products as p', 'p.id', '=', 'op.product_id')
             ->where('op.product_id', '=', $id);
 
-        if ($period) {
+        if ($period && $period[0] && $period[1]) {
             $query->where(DB::raw('DATE(op.created_at)'), '>=', $period[0])
                 ->where(DB::raw('DATE(op.created_at)'), '<=', $period[1]);
         }
@@ -110,7 +110,7 @@ class OrderProductRepository
             ->join('categories as c', 'c.id', '=', 'p.category_id')
             ->where('p.category_id', '=', $id);
 
-        if ($period) {
+        if ($period && $period[0] && $period[1]) {
             $query->where(DB::raw('DATE(op.created_at)'), '>=', $period[0])
                 ->where(DB::raw('DATE(op.created_at)'), '<=', $period[1]);
         }
@@ -134,7 +134,7 @@ class OrderProductRepository
             ->join('customers as c', 'c.id', '=', 'o.customer_id')
             ->where('op.product_id', '=', $id);
 
-        if ($period) {
+        if ($period && $period[0] && $period[1]) {
             $query->where(DB::raw('DATE(op.created_at)'), '>=', $period[0])
                 ->where(DB::raw('DATE(op.created_at)'), '<=', $period[1]);
         }

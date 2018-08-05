@@ -95,14 +95,14 @@ class ReportRepository
 
     /**
      * @param array|null $period
-     * @return \Illuminate\Http\JsonResponse
+     * @return array
      */
     public function findOrderReport(array $period = null)
     {
         $orders = \DB::table('orders AS o')
             ->select([DB::raw('COALESCE(SUM(o.total), 0) AS total'), DB::raw('COUNT(o.id) AS quantity')]);
 
-        if ($period) {
+        if ($period && $period[0] && $period[1]) {
             $orders->where(DB::raw('DATE(o.created_at)'), '>=', $period[0])
                 ->where(DB::raw('DATE(o.created_at)'), '<=', $period[1]);
         }
@@ -113,16 +113,20 @@ class ReportRepository
             ->select(['o.id', 'o.total', 'o.created_at', 'c.name'])
             ->join('customers AS c', 'c.id', '=', 'o.customer_id');
 
-        if ($period) {
+        if ($period && $period[0] && $period[1]) {
             $orders->where(DB::raw('DATE(o.created_at)'), '>=', $period[0])
                 ->where(DB::raw('DATE(o.created_at)'), '<=', $period[1]);
         }
 
         $orders->orderBy('created_at', 'DESC');
 
-        $response['list'] = $orders->get();
+        $response['list'] = $orders->get()->toArray();
 
-        return response()->json($response);
+        foreach ($response['list'] as $key => $val) {
+            $response['list'][$key] = (array)$val;
+        }
+
+        return $response;
     }
 
     /**

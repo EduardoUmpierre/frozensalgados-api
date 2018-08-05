@@ -40,28 +40,14 @@ class ReportController extends Controller
     }
 
     /**
-     * @return array
-     */
-    public function getProductReport()
-    {
-        return $this->orderProductRepository->findTotal();
-    }
-
-    /**
      * @param Request $request
-     * @param string $from
-     * @param string $to
+     * @param string|null $from
+     * @param string|null $to
      * @return array
      */
-    public function getProductReportBetweenDates(Request $request, string $from, string $to)
+    public function getProductReport(Request $request, string $from = null, string $to = null)
     {
-        $request['from'] = $from;
-        $request['to'] = $to;
-
-        $this->validate($request, [
-            'from' => 'required|date',
-            'to' => 'required|date'
-        ]);
+        $this->validate($this->getValidationRequest($request, $from, $to), $this->getValidationParams($from, $to));
 
         return $this->orderProductRepository->findTotal([$from, $to]);
     }
@@ -69,64 +55,26 @@ class ReportController extends Controller
     /**
      * @param Request $request
      * @param string $id
+     * @param string|null $from
+     * @param string|null $to
      * @return OrderProductRepository|\Illuminate\Database\Eloquent\Model
      */
-    public function getProductReportById(Request $request, string $id)
+    public function getProductReportById(Request $request, string $id, string $from = null, string $to = null)
     {
-        $request['id'] = $id;
-
-        $this->validate($request, [
-            'id' => 'required|numeric',
-        ]);
-
-        return $this->orderProductRepository->findOneTotalByProductId($id);
-    }
-
-    /**
-     * @param Request $request
-     * @param string $id
-     * @param string $from
-     * @param string $to
-     * @return OrderProductRepository|\Illuminate\Database\Eloquent\Model
-     */
-    public function getProductReportBetweenDatesById(Request $request, string $id, string $from, string $to)
-    {
-        $request['id'] = $id;
-        $request['from'] = $from;
-        $request['to'] = $to;
-
-        $this->validate($request, [
-            'id' => 'required|numeric',
-            'from' => 'required|date',
-            'to' => 'required|date'
-        ]);
+        $this->validate($this->getValidationRequest($request, $from, $to, $id), $this->getValidationParams($from, $to, $id));
 
         return $this->orderProductRepository->findOneTotalByProductId($id, [$from, $to]);
     }
 
     /**
-     * @return array
-     */
-    public function getCategoryReport()
-    {
-        return $this->categoryRepository->findTotal();
-    }
-
-    /**
      * @param Request $request
-     * @param string $from
-     * @param string $to
+     * @param string|null $from
+     * @param string|null $to
      * @return array
      */
-    public function getCategoryReportBetweenDates(Request $request, string $from, string $to)
+    public function getCategoryReport(Request $request, string $from = null, string $to = null)
     {
-        $request['from'] = $from;
-        $request['to'] = $to;
-
-        $this->validate($request, [
-            'from' => 'required|date',
-            'to' => 'required|date'
-        ]);
+        $this->validate($this->getValidationRequest($request, $from, $to), $this->getValidationParams($from, $to));
 
         return $this->categoryRepository->findTotal([$from, $to]);
     }
@@ -134,64 +82,26 @@ class ReportController extends Controller
     /**
      * @param Request $request
      * @param string $id
-     * @return array
-     */
-    public function getCategoryReportById(Request $request, string $id)
-    {
-        $request['id'] = $id;
-
-        $this->validate($request, [
-            'id' => 'required|numeric',
-        ]);
-
-        return $this->categoryRepository->findTotalById($id);
-    }
-
-    /**
-     * @param Request $request
-     * @param string $id
      * @param string $from
      * @param string $to
      * @return array
      */
-    public function getCategoryReportBetweenDatesById(Request $request, string $id, string $from, string $to)
+    public function getCategoryReportById(Request $request, string $id, string $from, string $to)
     {
-        $request['id'] = $id;
-        $request['from'] = $from;
-        $request['to'] = $to;
-
-        $this->validate($request, [
-            'id' => 'required|numeric',
-            'from' => 'required|date',
-            'to' => 'required|date'
-        ]);
+        $this->validate($this->getValidationRequest($request, $from, $to, $id), $this->getValidationParams($from, $to, $id));
 
         return $this->categoryRepository->findTotalById($id, [$from, $to]);
     }
 
     /**
-     * @return array
-     */
-    public function getSellerReport()
-    {
-        return $this->userRepository->findTotal();
-    }
-
-    /**
      * @param Request $request
-     * @param string $from
-     * @param string $to
+     * @param string|null $from
+     * @param string|null $to
      * @return array
      */
-    public function getSellerReportBetweenDates(Request $request, string $from, string $to)
+    public function getSellerReport(Request $request, string $from = null, string $to = null)
     {
-        $request['from'] = $from;
-        $request['to'] = $to;
-
-        $this->validate($request, [
-            'from' => 'required|date',
-            'to' => 'required|date'
-        ]);
+        $this->validate($this->getValidationRequest($request, $from, $to), $this->getValidationParams($from, $to));
 
         return $this->userRepository->findTotal([$from, $to]);
     }
@@ -199,78 +109,41 @@ class ReportController extends Controller
     /**
      * @param Request $request
      * @param string $id
+     * @param string|null $from
+     * @param string|null $to
      * @return UserRepository|\Illuminate\Database\Eloquent\Model
      */
-    public function getSellerReportById(Request $request, string $id)
+    public function getSellerReportById(Request $request, string $id, string $from = null, string $to = null)
     {
-        $request['id'] = $id;
-
-        $this->validate($request, [
-            'id' => 'required|numeric',
-        ]);
-
-        return $this->userRepository->findTotalById($id);
-    }
-
-    /**
-     * @param Request $request
-     * @param string $id
-     * @param string $from
-     * @param string $to
-     * @return UserRepository|\Illuminate\Database\Eloquent\Model
-     */
-    public function getSellerReportBetweenDatesById(Request $request, string $id, string $from, string $to)
-    {
-        $request['id'] = $id;
-        $request['from'] = $from;
-        $request['to'] = $to;
-
-        $this->validate($request, [
-            'id' => 'required|numeric',
-            'from' => 'required|date',
-            'to' => 'required|date'
-        ]);
+        $this->validate($this->getValidationRequest($request, $from, $to, $id), $this->getValidationParams($from, $to, $id));
 
         return $this->userRepository->findTotalById($id, [$from, $to]);
     }
 
     /**
      * @param Request $request
+     * @param string|null $from
+     * @param string|null $to
      * @return array
      */
-    public function getCustomerReport(Request $request)
+    public function getCustomerReport(Request $request, string $from = null, string $to = null)
     {
-        return $this->customerRepository->findReport($request->user()->id, $request->user()->role);
-    }
+        $this->validate($this->getValidationRequest($request, $from, $to), $this->getValidationParams($from, $to));
 
-    /**
-     * @param Request $request
-     * @param string $from
-     * @param string $to
-     * @return array
-     */
-    public function getCustomerReportBetweenDates(Request $request, string $from, string $to)
-    {
         return $this->customerRepository->findReport($request->user()->id, $request->user()->role, [$from, $to]);
     }
 
     /**
-     * @param int $id
-     * @return mixed
+     * @param Request $request
+     * @param string $id
+     * @param string|null $from
+     * @param string|null $to
+     * @return CustomerRepository|\Illuminate\Database\Eloquent\Model
      */
-    public function getCustomerReportById(int $id)
+    public function getCustomerReportById(Request $request, string $id, string $from = null, string $to = null)
     {
-        return $this->customerRepository->findReportById($id);
-    }
+        $this->validate($this->getValidationRequest($request, $from, $to, $id), $this->getValidationParams($from, $to, $id));
 
-    /**
-     * @param int $id
-     * @param string $from
-     * @param string $to
-     * @return \Illuminate\Database\Eloquent\Model|static
-     */
-    public function getCustomerReportBetweenDatesById(int $id, string $from, string $to)
-    {
         return $this->customerRepository->findReportById($id, [$from, $to]);
     }
 
@@ -285,40 +158,66 @@ class ReportController extends Controller
     }
 
     /**
-     * @return \Illuminate\Http\JsonResponse
+     * @param string|null $from
+     * @param string|null $to
+     * @return array
      */
-    public function getOrderReport()
-    {
-        return $this->reportRepository->findOrderReport();
-    }
-
-    /**
-     * @param string $from
-     * @param string $to
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function getOrderReportBetweenDates(string $from, string $to)
+    public function getOrderReport(string $from = null, string $to = null)
     {
         return $this->reportRepository->findOrderReport([$from, $to]);
     }
 
     /**
      * @param int $id
-     * @return mixed
+     * @param string|null $from
+     * @param string|null $to
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function getOrderReportById(int $id)
+    public function getOrderReportById(int $id, string $from = null, string $to = null)
     {
-        return $this->reportRepository->findOrderReportById($id);
+        return $this->reportRepository->findOrderReportById($id, [$from, $to]);
     }
 
     /**
-     * @param int $id
-     * @param string $from
-     * @param string $to
-     * @return \Illuminate\Http\JsonResponse
+     * @param $from
+     * @param $to
+     * @param string|null $id
+     * @return array
      */
-    public function getOrderReportBetweenDatesById(int $id, string $from, string $to)
+    private function getValidationParams($from, $to, string $id = null)
     {
-        return $this->reportRepository->findOrderReportById($id, [$from, $to]);
+        $params = [];
+
+        if ($id) {
+            $params['id'] = 'required|numeric';
+        }
+
+        if ($from && $to) {
+            $params['from'] = 'required|date';
+            $params['to'] = 'required|date';
+        }
+
+        return $params;
+    }
+
+    /**
+     * @param Request $request
+     * @param $from
+     * @param $to
+     * @param string|null $id
+     * @return Request
+     */
+    private function getValidationRequest(Request $request, $from, $to, string $id = null)
+    {
+        if ($id) {
+            $request['id'] = $id;
+        }
+
+        if ($from && $to) {
+            $request['from'] = $from;
+            $request['to'] = $to;
+        }
+
+        return $request;
     }
 }

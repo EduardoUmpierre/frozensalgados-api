@@ -216,4 +216,97 @@ class ReportTest extends \TestCase
             ]
         ]);
     }
+
+    /**
+     *
+     */
+    public function testGettingSpecificSellerReport()
+    {
+        // Request without authentication
+        $this->get(ReportTest::URL . 'sellers/1');
+        $this->assertResponseStatus(401);
+
+        // Authentication
+        $user = factory(User::class)->create();
+        $this->actingAs($user);
+
+        // Get all orders with the authenticated user
+        $this->get(ReportTest::URL . 'sellers/1');
+        $this->assertResponseOk();
+
+        $this->seeJsonStructure([
+            'id', 'name', 'total'
+        ]);
+
+        // Get all orders with the authenticated user
+        $this->get(ReportTest::URL . 'sellers/1/2018-02-01/2018-02-28');
+        $this->assertResponseOk();
+
+        $this->seeJsonStructure([
+            'id', 'name', 'total'
+        ]);
+    }
+
+    /**
+     *
+     */
+    public function testGettingCustomerReport()
+    {
+        // Request without authentication
+        $this->get(ReportTest::URL . 'customers');
+        $this->assertResponseStatus(401);
+    }
+
+    /**
+     *
+     */
+    public function testGettingSpecificCustomerReport()
+    {
+        // Request without authentication
+        $this->get(ReportTest::URL . 'customers/1');
+        $this->assertResponseStatus(401);
+
+        // Authentication
+        $user = factory(User::class)->create();
+        $this->actingAs($user);
+
+        // Get all orders with the authenticated user
+        $this->get(ReportTest::URL . 'customers/1');
+        $this->assertResponseOk();
+
+        $this->seeJsonStructure([
+            'id', 'name', 'total'
+        ]);
+
+        // Get all orders with the authenticated user
+        $this->get(ReportTest::URL . 'customers/1/2018-02-01/2018-02-28');
+        $this->assertResponseOk();
+
+        $this->seeJsonStructure([
+            'id', 'name', 'total'
+        ]);
+    }
+
+    /**
+     *
+     */
+    public function testGettingSpecificPeriodReport()
+    {
+        // Request without authentication
+        $this->get(ReportTest::URL . 'period/2018-02-01/2018-02-28');
+        $this->assertResponseStatus(401);
+
+        // Authentication
+        $user = factory(User::class)->create();
+        $this->actingAs($user);
+
+        // Get period report with the authenticated user
+        $this->get(ReportTest::URL . 'period/2018-02-01/2018-02-28');
+        $this->assertResponseOk();
+
+        $this->seeJsonStructure([
+            'orders_quantity', 'orders_total', 'customers_quantity', 'average_ticket', 'products_list',
+            'categories_list', 'sellers_list'
+        ]);
+    }
 }

@@ -228,7 +228,13 @@
                         <tr valign="top">
                             <td width="20%">
                                 <div style="font-size: 7px;">Previsão de entrega</div>
-                                <span style="display: block; font-size: 14px;">{{ \Carbon\Carbon::parse($order['delivery_date'])->format('d/m/Y') }}</span>
+                                <span style="display: block; font-size: 14px;">
+                                    @if (isset($order['delivery_date']))
+                                        {{ \Carbon\Carbon::parse($order['delivery_date'])->format('d/m/Y') }}
+                                    @else
+                                        &nbsp;
+                                    @endif
+                                </span>
                             </td>
                             <td width="20%">
                                 <div style="font-size: 7px;">Ordem de compra</div>
@@ -282,8 +288,15 @@
                             <td width="100%">
                                 <div style="font-size: 7px;">Condição de pagamento</div>
                                 <span style="display: block; font-size: 14px;">
-                                    ({{ \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $order['payment_date'])->diffInDays(\Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $order['delivery_date'])) }})
-                                    {{ \Carbon\Carbon::parse($order['payment_date'])->format('d/m/Y') }}
+                                    @if (isset($order['payment_date']))
+                                        @if (isset($order['delivery_date']))
+                                            ({{ \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $order['payment_date'])->diffInDays(\Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $order['delivery_date'])) }})
+                                        @endif
+
+                                        {{ \Carbon\Carbon::parse($order['payment_date'])->format('d/m/Y') }}
+                                    @else
+                                        &nbsp;
+                                    @endif
                                 </span>
                             </td>
                         </tr>

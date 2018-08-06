@@ -115,7 +115,7 @@ class OrderTest extends \TestCase
         factory(Order::class, 3)->create(['user_id' => $user->id, 'customer_id' => 1]);
 
         // Get one order
-        $this->get(OrderTest::URL . '1/products')->response->getContent();
+        $this->get(OrderTest::URL . '1/products');
         $this->assertResponseStatus(200);
 
         $this->seeJsonStructure([

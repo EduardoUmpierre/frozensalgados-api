@@ -16,7 +16,7 @@ class CustomerRepository
      */
     public function findAll(int $id, int $role): Collection
     {
-        $query = Customer::query()->select(['id', 'name', 'address', 'phone']);
+        $query = Customer::query()->select(['id', 'name', 'address', 'address_number', 'phone']);
 
         if ($role !== 1) {
             $query->where('user_id', '=', $id);

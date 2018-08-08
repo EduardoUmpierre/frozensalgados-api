@@ -77,4 +77,12 @@ class OrderController extends Controller
 
         return response()->json($this->orderRepository->create($request->all(), $request->user()->id), Response::HTTP_CREATED);
     }
+
+    /**
+     * @param Request $request
+     * @return int|mixed
+     */
+    public function markAsRead(Request $request) {
+        return $this->orderRepository->markAsRead($request->get('id'));
+    }
 }

@@ -49,6 +49,7 @@ $router->group(['prefix' => 'api/v1', 'middleware' => ['auth']], function () use
         $router->get('/customer/{id}', 'OrderController@getAllByCustomer');
         $router->get('/{id}/products', 'OrderController@getOneByCustomer');
         $router->post('/', 'OrderController@create');
+        $router->post('/read', 'OrderController@markAsRead');
     });
 
     /**

@@ -190,4 +190,16 @@ class OrderRepository
     {
         return Order::with(['customer', 'orderProduct', 'orderProduct.product'])->findOrFail($id);
     }
+
+    /**
+     * @param int $id
+     * @return int|mixed
+     */
+    public function markAsRead(int $id) {
+        $order = $this->findOneById($id);
+        $order->was_read = !$order->was_read;
+        $order->update();
+
+        return ['was_read' => $order->was_read];
+    }
 }

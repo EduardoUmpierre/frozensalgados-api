@@ -50,6 +50,7 @@ $router->group(['prefix' => 'api/v1', 'middleware' => ['auth']], function () use
         $router->get('/{id}/products', 'OrderController@getOneByCustomer');
         $router->post('/', 'OrderController@create');
         $router->post('/read', 'OrderController@markAsRead');
+        $router->put('/{id}', 'OrderController@update');
     });
 
     /**

@@ -68,6 +68,7 @@ class CustomerController extends Controller
     public function update(Request $request, int $id): JsonResponse
     {
         $this->validate($request, [
+            'id' => 'required',
             'user_id' => 'required',
             'name' => 'required',
             'cnpj' => 'required|unique:customers,cnpj,' . $id,

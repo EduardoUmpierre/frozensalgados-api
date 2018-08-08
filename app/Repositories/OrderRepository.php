@@ -96,7 +96,8 @@ class OrderRepository
             'payment_date' => $params['payment_date'],
             'payment_method' => $params['payment_method'],
             'delivery_date' => $params['delivery_date'],
-            'installments' => $params['installments']
+            'installments' => $params['installments'],
+            'was_read' => 0
         ];
 
         if (isset($params['comments'])) {
@@ -107,6 +108,47 @@ class OrderRepository
 
         foreach ($products as $key => $val) {
             $this->orderProductRepository->create($order->id, $val['id'], $val['qnt'], $val['price']);
+        }
+
+        return null;
+    }
+
+    /**
+     * @param array $params
+     * @param int $user
+     * @return null
+     */
+    public function update(array $params, int $user)
+    {
+        $customer = $this->customerRepository->findOneById($params['customer']['id'], ['id']);
+        $products = $params['order'];
+        $orderTotal = 0;
+
+        foreach ($products as $key => $val) {
+            $orderTotal += $val['price'] * $val['qnt'];
+        }
+
+        $orderParams = [
+            'customer_id' => $customer->id,
+            'total' => $orderTotal,
+            'user_id' => $user,
+            'status' => $params['status'],
+            'payment_date' => $params['payment_date'],
+            'payment_method' => $params['payment_method'],
+            'delivery_date' => $params['delivery_date'],
+            'installments' => $params['installments']
+        ];
+
+        if (isset($params['comments'])) {
+            $orderParams['comments'] = $params['comments'];
+        }
+
+        Order::query()->where('id', '=', $params['id'])->update($orderParams);
+
+        $this->orderProductRepository->removeAllFromOrder($params['id']);
+
+        foreach ($products as $key => $val) {
+            $this->orderProductRepository->create($params['id'], $val['id'], $val['qnt'], $val['price']);
         }
 
         return null;
@@ -193,7 +235,7 @@ class OrderRepository
 
     /**
      * @param int $id
-     * @return int|mixed
+     * @return array
      */
     public function markAsRead(int $id) {
         $order = $this->findOneById($id);

@@ -60,9 +60,9 @@ class OrderController extends Controller
     }
 
     /**
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
+ * @param Request $request
+ * @return \Illuminate\Http\JsonResponse
+ */
     public function create(Request $request)
     {
         $this->validate($request, [
@@ -76,6 +76,25 @@ class OrderController extends Controller
         ]);
 
         return response()->json($this->orderRepository->create($request->all(), $request->user()->id), Response::HTTP_CREATED);
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function update(Request $request)
+    {
+        $this->validate($request, [
+            'customer' => 'required',
+            'order' => 'required',
+            'status' => 'required|numeric|min:1|max:3',
+            'payment_method' => 'required|numeric|min:1|max:4',
+            'payment_date' => 'required|date',
+            'delivery_date' => 'required|date',
+            'installments' => 'required|numeric|min:1|max:3'
+        ]);
+
+        return response()->json($this->orderRepository->update($request->all(), $request->user()->id));
     }
 
     /**

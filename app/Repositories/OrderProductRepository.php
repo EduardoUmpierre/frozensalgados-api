@@ -143,4 +143,11 @@ class OrderProductRepository
 
         return $query->get();
     }
+
+    /**
+     * @param int $id
+     */
+    public function removeAllFromOrder(int $id) {
+        OrderProduct::query()->where('order_id', '=', $id)->delete();
+    }
 }

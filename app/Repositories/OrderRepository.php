@@ -56,7 +56,7 @@ class OrderRepository
      */
     public function findOneById(int $id): Model
     {
-        return Order::with(['customer:id,name,phone,address,cnpj', 'orderProduct', 'orderProduct.product'])->findOrFail($id);
+        return Order::with(['customer:id,name,phone,address,cnpj', 'orderProduct', 'orderProduct.product', 'user:id,name'])->findOrFail($id);
     }
 
     /**
